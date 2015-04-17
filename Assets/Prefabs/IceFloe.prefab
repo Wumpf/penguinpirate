@@ -15,7 +15,7 @@ GameObject:
   - 54: {fileID: 5477938}
   - 114: {fileID: 11483144}
   m_Layer: 0
-  m_Name: IceShelf
+  m_Name: IceFloe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
