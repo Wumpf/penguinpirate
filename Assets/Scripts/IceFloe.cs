@@ -4,9 +4,9 @@ using System.Linq;
 
 public class IceFloe : MonoBehaviour
 {
-	private const float SINKING_SPEED = 0.1f;
+	public float SINKING_SPEED = 0.05f;
 
-	private const float SINK_MOVEMENT = 0.002f;
+	private const float SINK_MOVEMENT = 0.1f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 

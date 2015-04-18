@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 	private const float JUMP_DURATION = 2.0f;
 	private const float JUMP_TAP_DURATION = 0.15f;
 	private const float JUMP_HEIGHT = 5.0f;
+	private const float JUMP_MAX_DISTANCE = 5.0f;
 
 	private float lastTapTime = -999999.0f;
 
@@ -35,7 +36,11 @@ public class Player : MonoBehaviour
 		if (TouchInput.lastTapReleaseTime - TouchInput.lastTapStartTime < JUMP_TAP_DURATION && 
 			transform.parent != null && transform.parent.GetComponent<IceFloe>())
 		{
-			StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+			Vector3 destination = TouchInput.lastTapReleasePosition.groundPosition;
+			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE)
+				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+			else
+				Debug.Log("Too far away.");
 		}	
 	}
 
