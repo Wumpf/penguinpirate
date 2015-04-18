@@ -10,6 +10,8 @@ class PlayerMovementController : MonoBehaviour
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
     public static float TAP_DURATION = 0.15f;
 
+    public float MaxSpeed;
+
     public float SpeedFactor;
 
     public Vector3 Position 
@@ -57,7 +59,7 @@ class PlayerMovementController : MonoBehaviour
         Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
         if (startMovement.magnitude < 1F)
         {
-            startMovement = (targetPosition - startPosition).normalized * 0.1F;
+            startMovement = (targetPosition - startPosition).normalized;
             if (transform.parent != null && transform.parent.GetComponent<Rigidbody>())
                 transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
         }
@@ -82,7 +84,7 @@ class PlayerMovementController : MonoBehaviour
         if (iceFloe == null)
             return;
 
-        Debug.Log("velocity " + iceFloe.velocity);
+        Debug.Log("velocity " + iceFloe.velocity.magnitude);
 
         float currentT;
         path.GetNearestPosition(Position, out currentT);
