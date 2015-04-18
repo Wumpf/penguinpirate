@@ -23,6 +23,10 @@ class PlayerMovementController : MonoBehaviour{
     public void Start()
     {
         touching = false;
+
+        hintSplineDots = new GameObject[10];
+        for(int i = 0; i < hintSplineDots.Length; ++i)
+            hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
 	}
 	
 	// Update is called once per frame
@@ -68,7 +72,7 @@ class PlayerMovementController : MonoBehaviour{
         hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start);
         //int numDots = this.
 
-        GameObject dotNew = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+       
     }
 
     public void ResetHint()
