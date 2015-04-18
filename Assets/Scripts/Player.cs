@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-	private const float JUMP_DURATION = 2.0f;
-	private const float JUMP_TAP_DURATION = 0.15f;
-	private const float JUMP_HEIGHT = 5.0f;
-	private const float JUMP_MAX_DISTANCE = 5.0f;
+    public const float JUMP_DURATION = 2.0f;
+    public const float JUMP_TAP_DURATION = 0.15f;
+    public const float JUMP_HEIGHT = 5.0f;
+    public const float JUMP_MAX_DISTANCE = 5.0f;
 
 	// If the player position is below, this height, it will be reset to its start position.
 	private const float SUNK_HEIGHT = -7.0f;
