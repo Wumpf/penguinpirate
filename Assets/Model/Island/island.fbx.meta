@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: bcad9e6146a4e4c5c8382e91f6f66ad5
-timeCreated: 1429301425
-licenseType: Pro
+timeCreated: 1429382965
+licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
@@ -11,46 +11,41 @@ ModelImporter:
     100006: Cylinder_002
     100008: //RootNode
     100010: Lamp_001
-    100012: Plane
-    100014: Plane_001
-    100016: Plane_002
-    100018: Plane_003
-    100020: Plane_014
+    100012: Plane_001
+    100014: Plane_002
+    100016: Plane_003
+    100018: Plane_014
     400000: Camera
     400002: Cylinder
     400004: Cylinder_001
     400006: Cylinder_002
     400008: //RootNode
     400010: Lamp_001
-    400012: Plane
-    400014: Plane_001
-    400016: Plane_002
-    400018: Plane_003
-    400020: Plane_014
+    400012: Plane_001
+    400014: Plane_002
+    400016: Plane_003
+    400018: Plane_014
     2300000: Cylinder
     2300002: Cylinder_001
     2300004: Cylinder_002
-    2300006: Plane
-    2300008: Plane_001
-    2300010: Plane_002
-    2300012: Plane_003
-    2300014: Plane_014
+    2300006: Plane_001
+    2300008: Plane_002
+    2300010: Plane_003
+    2300012: Plane_014
     3300000: Cylinder
     3300002: Cylinder_001
     3300004: Cylinder_002
-    3300006: Plane
-    3300008: Plane_001
-    3300010: Plane_002
-    3300012: Plane_003
-    3300014: Plane_014
+    3300006: Plane_001
+    3300008: Plane_002
+    3300010: Plane_003
+    3300012: Plane_014
     4300000: Cylinder_002
     4300002: Plane_003
     4300004: Cylinder_001
     4300006: Plane_002
     4300008: Cylinder
     4300010: Plane_014
-    4300012: Plane
-    4300014: Plane_001
+    4300012: Plane_001
   materials:
     importMaterials: 1
     materialName: 0
@@ -70,7 +65,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 10
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
