@@ -58,6 +58,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 446338}
   - 136: {fileID: 13666850}
+  - 114: {fileID: 11439308}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -128,7 +129,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.2399998, y: 1.70000005, z: .140000001}
+  m_LocalPosition: {x: -11.2399998, y: 1.66999984, z: .140000001}
   m_LocalScale: {x: .42476514, y: 3.14918733, z: .42476514}
   m_Children:
   - {fileID: 412060}
@@ -243,6 +244,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168574}
   m_Mesh: {fileID: 4300002, guid: 2a1a9540b9aaa4979a651cd8e49d397f, type: 3}
+--- !u!114 &11439308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8995115e7656004d89ddc8ef709a1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &13666850
 CapsuleCollider:
   m_ObjectHideFlags: 1
