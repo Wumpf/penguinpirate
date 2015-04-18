@@ -11,6 +11,7 @@ class PlayerMovementController : MonoBehaviour
     public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
     private Helpers.HermiteSpline currentMovement;
+    private Helpers.HermiteSpline hintMovement;
 
     public GameObject dot;
     private GameObject[] hintSplineDots;
@@ -64,6 +65,7 @@ class PlayerMovementController : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 touching = false;
+                ResetHint();
             }
 
             Vector2 touchDirection = Input.touches[0].position - touchStart;
@@ -90,20 +92,21 @@ class PlayerMovementController : MonoBehaviour
     public void ChangeHint(Vector2 start, Vector2 direction)
     {
         hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start, direction);
-        //int numDots = this.
+        ShowHint();
     }
 
     public void ChangeHint(Vector2 start)
     {
         hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start);
-        //int numDots = this.
-
-
+        ShowHint();     
     }
 
     public void ResetHint()
     {
         hintMovement = null; // new Helpers.HermiteSpline((Vector2)transform.position, currentMovement.EvaluateAt(relativeTime), start);
+        foreach (GameObject hintDot in hintSplineDots)
+            hintDot.SetActive(false);
+
         //int numDots = this.
     }
 
@@ -111,5 +114,11 @@ class PlayerMovementController : MonoBehaviour
     {
         if (hintMovement == null)
             return;
+
+        for (int i = 0; i < hintSplineDots.Length; ++i)
+        {
+            hintSplineDots[i].transform.position = hintMovement.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
+            hintSplineDots[i].SetActive(true);
+        }
     }
 }
