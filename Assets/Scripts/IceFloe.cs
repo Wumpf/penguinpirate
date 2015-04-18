@@ -4,7 +4,7 @@ using System.Linq;
 
 public class IceFloe : MonoBehaviour
 {
-	private const float SINKING_SPEED = 1.0f;
+	private const float SINKING_SPEED = 0.1f;
 
 	/// <summary>
 	/// Factor to get Y position from sink-percentage.
