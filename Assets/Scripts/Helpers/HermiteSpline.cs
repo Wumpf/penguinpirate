@@ -39,5 +39,42 @@ namespace Helpers
 
             return (2 * t_cube - 3 * t_square + 1) * p_0 + (t_cube - 2 * t_square + t) * m_0 + (-2 * t_cube + 3 * t_square + 1) * p_1 + (t_cube - t_square) * m_1;
         }
+
+        public Vector2 DirectionAt(float t)
+        {
+            // p(t) = (6t^2-6t)p_0 + (3t^2-4t+1)m_0 + (-6t^2+6t)p_1 +(3t^2-2t)m_1 
+            float t_square = t * t;
+            
+            return (6 * t_square - 6 * t) * p_0 + (3 * t_square - 4 * t + 1) * m_0 + (-6 * t_square + 6 * t) * p_1 +(3 * t_square - 2 * t) * m_1;
+        }
+
+        public Vector2 GetNearestPosition(Vector2 position)
+        {
+            float t;
+            return GetNearestPosition(position, out t);
+        }
+
+        public Vector2 GetNearestPosition(Vector2 position, out float t)
+        {
+            t = -1F;
+            // calculated below
+            float nearestSqrDistance = float.MaxValue;
+            // calculated below
+            Vector2 nearestPosition = Vector2.zero;
+
+            float stepSize = 0.05F;
+            for(float progress = 0F; progress <= 1F; progress += stepSize)
+            {
+                Vector2 splinePosition = EvaluateAt(progress);
+                float sqrDistance = Vector2.SqrMagnitude(splinePosition - position);
+                if (sqrDistance < nearestSqrDistance)
+                {
+                    nearestSqrDistance = sqrDistance;
+                    nearestPosition = splinePosition;
+                    t = progress;
+                }
+            }
+            return nearestPosition;
+        }
     }
 }
