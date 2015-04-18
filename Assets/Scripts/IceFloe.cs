@@ -12,7 +12,10 @@ public class IceFloe : MonoBehaviour
 
 	private UIControl UIScript;
 
-	// Use this for initialization
+    public delegate void EventHandler(Collision col);
+    public event EventHandler OnCollision;
+	
+    // Use this for initialization
 	void OnEnable()
 	{
 		startPosition = transform.position;
@@ -53,4 +56,9 @@ public class IceFloe : MonoBehaviour
 
 		// TODO add some buoyancy animation :)
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        OnCollision.Invoke(col);
+    }
 }
