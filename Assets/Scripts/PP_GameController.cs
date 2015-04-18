@@ -2,6 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
+public enum PlayerStates{
+	idle=0,
+	jumping=1,
+	falling=2,
+	sinking=3,
+	died
+};
+
 public class PP_GameController : MonoBehaviour {
 	
 	public int currentLevel =1;
@@ -10,7 +18,6 @@ public class PP_GameController : MonoBehaviour {
 	//public GameObject scoreCount;
 	public GameObject levelCount;
 	private bool bannerAnimationPlayed=false;
-
 
 	public void updateGameLevels(){
 		// increment game level when player has reached ISLAND
@@ -22,7 +29,7 @@ public class PP_GameController : MonoBehaviour {
 
 	public void gameCompletedStatus(){
 		// check if the game has completed and what are the scores to be shown on HUD
-		animateTheBannerMessage ("You Win!");
+		animateTheBannerMessage ("You've done it!");
 	}
 
 	void animateTheBannerMessage(string msg){
@@ -65,7 +72,7 @@ public class PP_GameController : MonoBehaviour {
 		}
 
 	public void gameEndStatus(){ 	
-		animateTheBannerMessage("You've lost it :(");
+		animateTheBannerMessage("You've lost it!");
 
 	}
 

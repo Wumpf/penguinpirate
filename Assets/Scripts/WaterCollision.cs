@@ -17,7 +17,8 @@ public class WaterCollision : MonoBehaviour {
 			aSource.Play();
 
 			// instantiate a particle system of water splash
-			GameObject splash = Instantiate(waterSplash,collidedObj.transform.position,Quaternion.identity) as GameObject;
+			Vector3 waterSplashPos = new Vector3(collidedObj.transform.position.x,collidedObj.transform.position.y+1f,collidedObj.transform.position.z);
+			GameObject splash = Instantiate(waterSplash,waterSplashPos,Quaternion.identity) as GameObject;
 			ParticleSystem ps = splash.GetComponent<ParticleSystem>();
 			Destroy(splash,ps.duration);
 			}
