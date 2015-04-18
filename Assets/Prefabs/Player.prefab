@@ -59,6 +59,9 @@ GameObject:
   - 4: {fileID: 446338}
   - 136: {fileID: 13666850}
   - 114: {fileID: 11439308}
+  - 114: {fileID: 11443290}
+  - 54: {fileID: 5462412}
+  - 114: {fileID: 11490858}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -244,6 +247,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168574}
   m_Mesh: {fileID: 4300002, guid: 2a1a9540b9aaa4979a651cd8e49d397f, type: 3}
+--- !u!54 &5462412
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170540}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &11439308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -253,6 +271,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8995115e7656004d89ddc8ef709a1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11443290
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95946b1fc2cde2438d06031dffdaba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TouchInput: {fileID: 0}
+  dot: {fileID: 0}
+--- !u!114 &11490858
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8395eaa36553a441cb2e8f9fc1b89f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &13666850
