@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
 		while (transform.parent == null) // Not yet reattached to an icefloe
 		{
 			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
-			transform.forward = Vector3.Slerp(new Vector3(LastJumpDirectionWorld.y, LastJumpDirectionWorld.y, LastJumpDirectionWorld.x), transform.forward, Mathf.Exp(-Time.time * 0.1f));
+			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
 
 			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 			yield return new WaitForFixedUpdate();
