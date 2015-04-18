@@ -11,6 +11,8 @@ GameObject:
   - 33: {fileID: 3385680}
   - 23: {fileID: 2346684}
   - 114: {fileID: 11455702}
+  - 65: {fileID: 6594354}
+  - 114: {fileID: 11403704}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -25,8 +27,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.04999995, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: -1.5007844, y: -1.25, z: 5.29712486}
+  m_LocalScale: {x: 10, y: 750, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -61,6 +63,30 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165070}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &6594354
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165070}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: .200067878, y: .200073004, z: .0352794155}
+  m_Center: {x: 3.39522921e-05, y: 7.09667938e-06, z: -.00114610814}
+--- !u!114 &11403704
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7c5fc6fb1a64d06bf95d873ecab5b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterSplash: {fileID: 179406, guid: 452e57cf3e5444d1eb437e94a22ec0d6, type: 2}
 --- !u!114 &11455702
 MonoBehaviour:
   m_ObjectHideFlags: 1
