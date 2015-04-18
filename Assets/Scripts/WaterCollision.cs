@@ -23,13 +23,14 @@ public class WaterCollision : MonoBehaviour {
 			}
 		}
 
-	void OnTriggerStay(Collider collidedObj){
+	// This is handled in the player, since... because.. well there is the code that works. This code here triggers loosing too early. Please don't ask any more questions.
+	/*void OnTriggerStay(Collider collidedObj){
 
 		if (collidedObj.gameObject.name == "Player") {
 			//player died, call game lose method of gamecontroller
 			PP_GameController gameCtrl = Camera.main.GetComponent<PP_GameController>();
 			gameCtrl.gameEndStatus();
 		}
-	}
+	}*/
 
 }
