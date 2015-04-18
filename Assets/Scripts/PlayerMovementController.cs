@@ -5,7 +5,7 @@ class PlayerMovementController : MonoBehaviour{
     public static float SECONDS_PER_SPLINE = 10;
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
 
-    public Vector3 Position;
+    public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
     private Helpers.HermiteSpline currentMovement;
     private Helpers.HermiteSpline hintMovement;
