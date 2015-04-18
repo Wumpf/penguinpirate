@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 class PlayerMovementController : MonoBehaviour
 {
-    public TouchInput TouchInput;
+    public TouchInput touchInput;
 
     public static float SECONDS_PER_SPLINE = 10;
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
+    public static float TAP_DURATION = 0.15f;
 
     public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
@@ -17,7 +19,7 @@ class PlayerMovementController : MonoBehaviour
     private GameObject[] hintSplineDots;
 
     private bool touching;
-    private Vector2 touchStart;
+    private Vector3 touchStart;
 
     // Time ranging from 0 to 1. 
     private float relativeTime;
@@ -30,6 +32,8 @@ class PlayerMovementController : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
+        touchInput.onTapRelease += UpdateCurrentMovement;
+
         touching = false;
 
         hintSplineDots = new GameObject[10];
@@ -37,73 +41,64 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
 
-    // Update is called once per frame
+    private void UpdateCurrentMovement()
+    {
+        Vector3 startPosition = Position;
+        Vector3 startMovement = transform.forward;
+        Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
+        Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+
+        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
+        {
+            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
+        }
+        else
+        {
+            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+        }
+    }
+
+    float t = 0;
+
     void Update()
     {
-        if(!TouchInput.tapping)
-        {
-
-        }
-
-        if (!touching && Input.GetMouseButtonDown(0))
-        {
-            touching = true;
-
-            Vector2 screenPosition = Input.mousePosition; // TODO make compatible to tap!
-
-            Ray pickingRay = Camera.main.ScreenPointToRay(screenPosition);
-            float rayDist;
-            if (groundplane.Raycast(pickingRay, out rayDist)) // should never be false.
-            {
-                touchStart = pickingRay.GetPoint(rayDist);
-            }
-        }
-
-        if (touching)
-        {
-            // Released
-            if (Input.GetMouseButtonUp(0))
-            {
-                touching = false;
-                ResetHint();
-            }
-
-            Vector2 touchDirection = Input.touches[0].position - touchStart;
-            if (touchDirection.magnitude < MIN_DIRECTION_SIZE_PIXELS)
-                ChangeHint(touchStart);
-            else
-                ChangeHint(touchStart, touchDirection);
-        }
     }
-
+    
+    
     void FixedUpdate()
     {
-        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-        if (iceFloe == null)
+        if(transform.parent != null)
         {
-            return;
-        }
+            Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
+            if (iceFloe == null)
+            {
+                return;
+            }
 
-        float currentT;
-        currentMovement.GetNearestPosition((Vector2)Position, out currentT);
-        iceFloe.AddForce(currentMovement.DirectionAt(currentT));
+            float currentT;
+            if(currentMovement != null)
+            {
+                currentMovement.GetNearestPosition(Position, out currentT);
+                iceFloe.AddForce(currentMovement.DirectionAt(currentT));
+            }
+        }
     }
 
-    public void ChangeHint(Vector2 start, Vector2 direction)
+    public void ChangeHint(Vector3 start, Vector3 direction)
     {
-        hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start, direction);
+        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start, direction);
         ShowHint();
     }
 
-    public void ChangeHint(Vector2 start)
+    public void ChangeHint(Vector3 start)
     {
-        hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start);
+        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start);
         ShowHint();     
     }
 
     public void ResetHint()
     {
-        hintMovement = null; // new Helpers.HermiteSpline((Vector2)transform.position, currentMovement.EvaluateAt(relativeTime), start);
+        hintMovement = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
         foreach (GameObject hintDot in hintSplineDots)
             hintDot.SetActive(false);
 
@@ -120,5 +115,34 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i].transform.position = hintMovement.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
             hintSplineDots[i].SetActive(true);
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        if (currentMovement != null)
+        {
+            Gizmos.DrawLine(currentMovement.StartPosition, currentMovement.StartPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(currentMovement.FinalPosition, currentMovement.FinalPosition + Vector3.up * 2F);
+        }
+        DrawCurrentMovement();
+    }
+
+    void DrawCurrentMovement()
+    {
+        Gizmos.color = Color.white;
+        if (currentMovement != null)
+        {
+            float stepSize = 0.05F;
+            for (float t = 0F; t <= 1F; t += stepSize)
+            {
+                Gizmos.DrawSphere(currentMovement.EvaluateAt(t), 0.1F);
+            }
+        }
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(touchInput.lastTapStartPosition.groundPosition, 0.5F);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(touchInput.lastTapReleasePosition.groundPosition, 0.5F);
     }
 }
