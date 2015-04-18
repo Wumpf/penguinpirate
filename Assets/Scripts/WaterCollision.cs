@@ -6,7 +6,7 @@ public class WaterCollision : MonoBehaviour {
 
 	public GameObject waterSplash;
 	void OnTriggerEnter(Collider collidedObj){
-		if (collidedObj.gameObject.name == "Player") {
+		if (collidedObj.gameObject.name == "Player"){
 			// instantiate a particle system of water splash
 			GameObject splash = Instantiate(waterSplash,collidedObj.transform.localPosition,Quaternion.identity) as GameObject;
 			ParticleSystem ps = splash.GetComponent<ParticleSystem>();
