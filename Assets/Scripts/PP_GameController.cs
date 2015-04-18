@@ -6,11 +6,6 @@ public class PP_GameController : MonoBehaviour {
 
 	public int currentLevel =1;
 	public int score=0;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,8 +13,6 @@ public class PP_GameController : MonoBehaviour {
 	}
 
 	// user methods for game status
-
-
 	void updateGameLevels(){
 		// increment game level when player has reached ISLAND
 

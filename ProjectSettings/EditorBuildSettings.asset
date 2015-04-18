@@ -4,4 +4,46 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Start.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/FingerEventsPart1.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/FingerEventsPart2.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/OneFingerGestures.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/PinchRotation.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/TwoFingerGestures.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Advanced Mode/Advanced PinchRotation.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Advanced Mode/Multi-Finger Swipe.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/FingerEventsPart1.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/FingerEventsPart2.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/OneFingerGestures.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/PinchRotation.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Basic Mode/TwoFingerGestures.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Javascript/PickObject.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Misc/MoveToFinger.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Start.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Toolbox/Toolbox-DragDrop.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Toolbox/Toolbox-DragOrbitCamera.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Toolbox/Toolbox-FingerEvents.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Toolbox/Toolbox-OneFingerGestures.unity
+  - enabled: 1
+    path: Assets/FingerGestures/Samples/Scenes/Toolbox/Toolbox-PinchZoomCamera.unity
