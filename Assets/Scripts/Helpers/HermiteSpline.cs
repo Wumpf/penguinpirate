@@ -12,10 +12,12 @@ namespace Helpers
 
         private Vector3 p_0, p_1, m_0, m_1;
 
+        public float Length { get; private set; }
+
         public Vector3 StartPosition { get { return p_0; } }
-        public Vector3 StartMovementDirection { get { return m_0; } }
+        public Vector3 StartMovement { get { return m_0; } }
         public Vector3 FinalPosition { get { return p_1; } }
-        public Vector3 FinalMovementDirection { get { return m_1; } }
+        public Vector3 FinalMovement { get { return m_1; } }
 
         public HermiteSpline(Vector3 start, Vector3 startDirection, Vector3 end, Vector3 endDirection)
         {
@@ -23,15 +25,23 @@ namespace Helpers
             p_1 = end;
             m_0 = startDirection;
             m_1 = endDirection;
+
+            Length = 0F;
+            Vector3 prevPos = EvaluateAt(0F);
+            Vector3 currPos;
+            float stepSize = 0.01F;
+            for (float t = stepSize; t <= 1F; t += stepSize)
+            {
+                currPos = EvaluateAt(t);
+                Length += Vector3.Distance(prevPos, currPos);
+                prevPos = currPos;
+            }
         }
 
         // Standard spline if no goal direction is given.
         public HermiteSpline(Vector3 start, Vector3 startDirection, Vector3 end)
+            : this(start, end, startDirection, (end - start).normalized * TAP_MOVEMENT_SPEED)
         {
-            p_0 = start;
-            p_1 = end;
-            m_0 = startDirection;
-            m_1 = (end - start).normalized * TAP_MOVEMENT_SPEED;
         }
 
         public Vector3 EvaluateAt(float t)
@@ -43,7 +53,7 @@ namespace Helpers
             return (2 * t_cube - 3 * t_square + 1) * p_0 + (t_cube - 2 * t_square + t) * m_0 + (-2 * t_cube + 3 * t_square) * p_1 + (t_cube - t_square) * m_1;
         }
 
-        public Vector3 DirectionAt(float t)
+        public Vector3 MovementAt(float t)
         {
             // p(t) = (6t^2-6t)p_0 + (3t^2-4t+1)m_0 + (-6t^2+6t)p_1 +(3t^2-2t)m_1 
             float t_square = t * t;
@@ -65,7 +75,7 @@ namespace Helpers
             // calculated below
             Vector3 nearestPosition = Vector3.zero;
 
-            float stepSize = 0.05F;
+            float stepSize = 0.01F;
             for(float progress = 0F; progress <= 1F; progress += stepSize)
             {
                 Vector3 splinePosition = EvaluateAt(progress);
