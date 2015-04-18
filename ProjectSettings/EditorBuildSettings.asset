@@ -51,3 +51,5 @@ EditorBuildSettings:
     path: Assets/Scenes/PenguinPirate.unity
   - enabled: 1
     path: Assets/Scenes/Menu.unity
+  - enabled: 1
+    path: Assets/Scenes/test.unity

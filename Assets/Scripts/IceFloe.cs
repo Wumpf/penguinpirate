@@ -12,11 +12,15 @@ public class IceFloe : MonoBehaviour
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
 
+	private UIControl UIScript;
+
 	// Use this for initialization
 	void OnEnable()
 	{
 		startPosition = transform.position;
 		startOrientation = transform.rotation;
+
+		UIScript = GameObject.Find("UI_Control").GetComponent<UIControl>();
 	}
 
 	/// <summary>
@@ -35,6 +39,9 @@ public class IceFloe : MonoBehaviour
 		if (transform.GetComponentsInChildren(typeof(Transform)).Any(x => x.tag == "Player"))
 		{
 			transform.Translate(0, -SINK_MOVEMENT * Time.deltaTime, 0);
+
+			UIScript.iceFloeTTL = ((SUNK_HEIGHT - transform.position.y) / (SUNK_HEIGHT - startPosition.y)) * 100;
+
 
 			if (transform.position.y < SUNK_HEIGHT)
 			{
