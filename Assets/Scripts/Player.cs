@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 	
 
 	public TouchInput TouchInput;
+	private PP_GameController gameController;
 
 	/// <summary>
 	/// Plane used for picking (used for getting a jump destination)
@@ -43,6 +44,12 @@ public class Player : MonoBehaviour
 		}
 		else
 			Debug.LogError("Please attach the player to a starting IceFloe!");
+
+		gameController = GameObject.FindObjectOfType<PP_GameController>();
+		if(gameController == null)
+		{
+			Debug.LogError("Please add a game controller to the scene!");
+		}
 	}
 
 	public void Reset()
@@ -98,14 +105,8 @@ public class Player : MonoBehaviour
 
 			if (transform.position.y < SUNK_HEIGHT)
 			{
-				Reset();
-
-				// Reset all floes
-				var allIceFloes = GameObject.FindObjectsOfType<IceFloe>();
-				foreach(var iceFloe in allIceFloes)
-					iceFloe.Reset();
-
-				Debug.Log("Reset position");
+				Debug.Log("Player has jumped into the water. You lost.");
+				gameController.gameEndStatus();
 				yield return null;
 			}
 

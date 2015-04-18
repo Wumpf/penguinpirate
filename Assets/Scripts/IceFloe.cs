@@ -4,23 +4,13 @@ using System.Linq;
 
 public class IceFloe : MonoBehaviour
 {
-	public float SINKING_SPEED = 0.05f;
-
-	private const float SINK_MOVEMENT = 0.1f;
+	private const float SINK_MOVEMENT = 0.05f;
+	private const float SUNK_HEIGHT = -1.56f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
-
-	/// <summary>
-	/// If below zero, the shelf is gone and the player on it has lost.
-	/// </summary>
-	public float SinkPercentage
-	{
-		get { return sinkPercentage; }
-	}
-	private float sinkPercentage = 1.0f;
 
 	// Use this for initialization
 	void OnEnable()
@@ -44,12 +34,12 @@ public class IceFloe : MonoBehaviour
 		// Shelves are sinking if they have a player transform child
 		if (transform.GetComponentsInChildren(typeof(Transform)).Any(x => x.tag == "Player"))
 		{
-			sinkPercentage -= Time.deltaTime * SINKING_SPEED;
 			transform.Translate(0, -SINK_MOVEMENT * Time.deltaTime, 0);
 
-			if (sinkPercentage < 0.0f)
+			if (transform.position.y < SUNK_HEIGHT)
 			{
-				// TODO
+				Debug.Log("icefloe with player has sunk. You lost.");
+				GameObject.FindObjectOfType<PP_GameController>().gameEndStatus();
 			}
 		}
 
