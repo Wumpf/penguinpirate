@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 class PlayerMovementController : MonoBehaviour
 {
@@ -42,14 +43,18 @@ class PlayerMovementController : MonoBehaviour
 
     private void UpdateCurrentMovement()
     {
+        Vector3 startPosition = Position;
+        Vector3 startMovement = transform.forward;
+        Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
+        Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+
         if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
         {
-            currentMovement = new Helpers.HermiteSpline(Position, transform.forward, touchInput.lastTapReleasePosition.groundPosition);
+            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
         }
         else
         {
-            Vector3 targetDirection = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
-            currentMovement = new Helpers.HermiteSpline(Position, transform.forward, touchInput.lastTapReleasePosition.groundPosition, targetDirection);
+            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
         }
     }
 
@@ -57,28 +62,27 @@ class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
-        if(currentMovement != null)
-        {
-            transform.position = currentMovement.EvaluateAt(t);
-            t += 0.01F;
-            t %= 1F;
-        }
-        
     }
     
-    /*
+    
     void FixedUpdate()
     {
-        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-        if (iceFloe == null)
+        if(transform.parent != null)
         {
-            return;
-        }
+            Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
+            if (iceFloe == null)
+            {
+                return;
+            }
 
-        float currentT;
-        currentMovement.GetNearestPosition(Position, out currentT);
-        iceFloe.AddForce(currentMovement.DirectionAt(currentT));
-    }*/
+            float currentT;
+            if(currentMovement != null)
+            {
+                currentMovement.GetNearestPosition(Position, out currentT);
+                iceFloe.AddForce(currentMovement.DirectionAt(currentT));
+            }
+        }
+    }
 
     public void ChangeHint(Vector3 start, Vector3 direction)
     {
@@ -111,5 +115,34 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i].transform.position = hintMovement.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
             hintSplineDots[i].SetActive(true);
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        if (currentMovement != null)
+        {
+            Gizmos.DrawLine(currentMovement.StartPosition, currentMovement.StartPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(currentMovement.FinalPosition, currentMovement.FinalPosition + Vector3.up * 2F);
+        }
+        DrawCurrentMovement();
+    }
+
+    void DrawCurrentMovement()
+    {
+        Gizmos.color = Color.white;
+        if (currentMovement != null)
+        {
+            float stepSize = 0.05F;
+            for (float t = 0F; t <= 1F; t += stepSize)
+            {
+                Gizmos.DrawSphere(currentMovement.EvaluateAt(t), 0.1F);
+            }
+        }
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(touchInput.lastTapStartPosition.groundPosition, 0.5F);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(touchInput.lastTapReleasePosition.groundPosition, 0.5F);
     }
 }

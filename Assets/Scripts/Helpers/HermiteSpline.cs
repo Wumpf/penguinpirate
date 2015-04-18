@@ -12,7 +12,10 @@ namespace Helpers
 
         private Vector3 p_0, p_1, m_0, m_1;
 
-        public Vector3 FinalMovementDirection {get{return m_1;}}
+        public Vector3 StartPosition { get { return p_0; } }
+        public Vector3 StartMovementDirection { get { return m_0; } }
+        public Vector3 FinalPosition { get { return p_1; } }
+        public Vector3 FinalMovementDirection { get { return m_1; } }
 
         public HermiteSpline(Vector3 start, Vector3 startDirection, Vector3 end, Vector3 endDirection)
         {
@@ -37,7 +40,7 @@ namespace Helpers
             float t_square = t * t;
             float t_cube = t_square * t;
 
-            return (2 * t_cube - 3 * t_square + 1) * p_0 + (t_cube - 2 * t_square + t) * m_0 + (-2 * t_cube + 3 * t_square + 1) * p_1 + (t_cube - t_square) * m_1;
+            return (2 * t_cube - 3 * t_square + 1) * p_0 + (t_cube - 2 * t_square + t) * m_0 + (-2 * t_cube + 3 * t_square) * p_1 + (t_cube - t_square) * m_1;
         }
 
         public Vector3 DirectionAt(float t)

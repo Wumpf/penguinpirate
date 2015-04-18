@@ -61,16 +61,16 @@ public class TouchInput : MonoBehaviour
         bool tapStart = !tapping && Input.GetMouseButtonDown(0);
         bool tapRelease = tapping && Input.GetMouseButtonUp(0);
 
-		if (tapStart)
-		{
-			tapping = true;
-			lastTapStartTime = Time.time;
-		}
-		else if (tapRelease)
-		{
-			tapping = false;
-			lastTapReleaseTime = Time.time;
-		}
+        if (tapStart)
+        {
+            tapping = true;
+            lastTapStartTime = Time.time;
+        }
+        else if (tapRelease)
+        {
+            tapping = false;
+            lastTapReleaseTime = Time.time;
+        }
 
 
         PositionInfo currentPosition = new PositionInfo();
@@ -87,7 +87,7 @@ public class TouchInput : MonoBehaviour
             }
 
             RaycastHit hit;
-            if(Physics.Raycast(pickingRay, out hit))
+            if (Physics.Raycast(pickingRay, out hit))
             {
                 currentPosition.hitPosition = hit.point;
             }
@@ -98,14 +98,18 @@ public class TouchInput : MonoBehaviour
         if (tapStart)
         {
             lastTapStartPosition = currentPosition;
-            if(onTapStart != null)
-				onTapStart.Invoke();
+            if (onTapStart != null)
+            {
+                onTapStart.Invoke();
+            }
         }
         else if (tapRelease)
         {
             lastTapReleasePosition = currentPosition;
-            if(onTapRelease != null)
-				onTapRelease.Invoke();
+            if (onTapRelease != null)
+            {
+                onTapRelease.Invoke();
+            }
         }
     }
 }
