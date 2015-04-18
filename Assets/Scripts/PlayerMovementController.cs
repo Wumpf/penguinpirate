@@ -3,10 +3,11 @@ using System.Collections;
 
 class PlayerMovementController : MonoBehaviour
 {
-    public TouchInput TouchInput;
+    public TouchInput touchInput;
 
     public static float SECONDS_PER_SPLINE = 10;
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
+    public static float TAP_DURATION = 0.15f;
 
     public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
@@ -17,7 +18,7 @@ class PlayerMovementController : MonoBehaviour
     private GameObject[] hintSplineDots;
 
     private bool touching;
-    private Vector2 touchStart;
+    private Vector3 touchStart;
 
     // Time ranging from 0 to 1. 
     private float relativeTime;
@@ -30,6 +31,8 @@ class PlayerMovementController : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
+        touchInput.onTapRelease += UpdateCurrentMovement;
+
         touching = false;
 
         hintSplineDots = new GameObject[10];
@@ -37,45 +40,33 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateCurrentMovement()
     {
-        if(!TouchInput.tapping)
+        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
         {
-
+            currentMovement = new Helpers.HermiteSpline(Position, transform.forward, touchInput.lastTapReleasePosition.groundPosition);
         }
-
-        if (!touching && Input.GetMouseButtonDown(0))
+        else
         {
-            touching = true;
-
-            Vector2 screenPosition = Input.mousePosition; // TODO make compatible to tap!
-
-            Ray pickingRay = Camera.main.ScreenPointToRay(screenPosition);
-            float rayDist;
-            if (groundplane.Raycast(pickingRay, out rayDist)) // should never be false.
-            {
-                touchStart = pickingRay.GetPoint(rayDist);
-            }
-        }
-
-        if (touching)
-        {
-            // Released
-            if (Input.GetMouseButtonUp(0))
-            {
-                touching = false;
-                ResetHint();
-            }
-
-            Vector2 touchDirection = Input.touches[0].position - touchStart;
-            if (touchDirection.magnitude < MIN_DIRECTION_SIZE_PIXELS)
-                ChangeHint(touchStart);
-            else
-                ChangeHint(touchStart, touchDirection);
+            Vector3 targetDirection = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+            currentMovement = new Helpers.HermiteSpline(Position, transform.forward, touchInput.lastTapReleasePosition.groundPosition, targetDirection);
         }
     }
 
+    float t = 0;
+
+    void Update()
+    {
+        if(currentMovement != null)
+        {
+            transform.position = currentMovement.EvaluateAt(t);
+            t += 0.01F;
+            t %= 1F;
+        }
+        
+    }
+    
+    /*
     void FixedUpdate()
     {
         Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
@@ -85,25 +76,25 @@ class PlayerMovementController : MonoBehaviour
         }
 
         float currentT;
-        currentMovement.GetNearestPosition((Vector2)Position, out currentT);
+        currentMovement.GetNearestPosition(Position, out currentT);
         iceFloe.AddForce(currentMovement.DirectionAt(currentT));
-    }
+    }*/
 
-    public void ChangeHint(Vector2 start, Vector2 direction)
+    public void ChangeHint(Vector3 start, Vector3 direction)
     {
-        hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start, direction);
+        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start, direction);
         ShowHint();
     }
 
-    public void ChangeHint(Vector2 start)
+    public void ChangeHint(Vector3 start)
     {
-        hintMovement = new Helpers.HermiteSpline((Vector2)Position, currentMovement.EvaluateAt(relativeTime), start);
+        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start);
         ShowHint();     
     }
 
     public void ResetHint()
     {
-        hintMovement = null; // new Helpers.HermiteSpline((Vector2)transform.position, currentMovement.EvaluateAt(relativeTime), start);
+        hintMovement = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
         foreach (GameObject hintDot in hintSplineDots)
             hintDot.SetActive(false);
 
