@@ -25,8 +25,20 @@ public class PP_GameController : MonoBehaviour {
 
 	}
 
-	void gameEndStatus(){
-		// when you lose game, show the message on screen
+	public void gameEndStatus()
+	{
+		// TODO messages ... 
+
+
+		// Reset player
+		var players = GameObject.FindObjectsOfType<Player>();
+		foreach (var player in players)
+			player.Reset();
+
+		// Reset all floes
+		var allIceFloes = GameObject.FindObjectsOfType<IceFloe>();
+		foreach (var iceFloe in allIceFloes)
+			iceFloe.Reset();
 	}
 
 	void updatePlayerScore(){
