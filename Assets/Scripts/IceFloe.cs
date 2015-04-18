@@ -11,7 +11,7 @@ public class IceFloe : MonoBehaviour
 	/// </summary>
 	private const float SINK_TO_Y = 1.0f;
 
-	private const float JUMP_FORCE_FACTOR = 3.0f;
+	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	/// <summary>
 	/// If below zero, the shelf is gone and the player on it has lost.

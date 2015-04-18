@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 
 	private float lastTapTime = -999999.0f;
 
+	public TouchInput TouchInput;
+
 	/// <summary>
 	/// Plane used for picking (used for getting a jump destination)
 	/// </summary>
@@ -24,29 +26,22 @@ public class Player : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		TouchInput.onTapRelease += JumpTap;
+	}
+
+	void JumpTap()
+	{
+		// If penguin is on top of the floe
+		if (TouchInput.lastTapReleaseTime - TouchInput.lastTapStartTime < JUMP_TAP_DURATION && 
+			transform.parent != null && transform.parent.GetComponent<IceFloe>())
+		{
+			StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+		}	
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
-			lastTapTime = Time.time;
-		
-		// If penguin is on top of the floe
-		if (Input.GetMouseButtonUp(0) && transform.parent != null && transform.parent.GetComponent<IceFloe>())
-		{
-			if (Time.time - lastTapTime < JUMP_TAP_DURATION)
-			{
-				Vector2 screenPosition = Input.mousePosition; // TODO make compatible to tap!
-
-				Ray pickingRay = Camera.main.ScreenPointToRay(screenPosition);
-				float rayDist;
-				if (groundplane.Raycast(pickingRay, out rayDist)) // should never be false.
-				{
-					StartCoroutine("Jump", pickingRay.GetPoint(rayDist));
-				}
-			}
-		}	
 	}
 
 	IEnumerator Jump(Vector3 destination)
@@ -72,7 +67,7 @@ public class Player : MonoBehaviour
 		while (transform.parent == null) // Not yet reattached to an icefloe
 		{
 			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
-			transform.forward = Vector3.Slerp(LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time));
+			transform.forward = Vector3.Slerp(new Vector3(LastJumpDirectionWorld.y, LastJumpDirectionWorld.y, LastJumpDirectionWorld.x), transform.forward, Mathf.Exp(-Time.time * 0.1f));
 
 			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 			yield return new WaitForFixedUpdate();
