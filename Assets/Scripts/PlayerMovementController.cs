@@ -11,6 +11,7 @@ class PlayerMovementController : MonoBehaviour{
     private Helpers.HermiteSpline hintMovement;
 
     public GameObject dot; 
+    private GameObject[] hintSplineDots;
 
     private bool touching;
     private Vector2 touchStart;
@@ -19,10 +20,9 @@ class PlayerMovementController : MonoBehaviour{
     private float relativeTime;
 
 	// Use this for initialization
-    public PlayerMovementController(Transform playerTransform)
+    public void Start()
     {
         touching = false;
-        Position = playerTransform.position;
 	}
 	
 	// Update is called once per frame
@@ -75,5 +75,11 @@ class PlayerMovementController : MonoBehaviour{
     {
         hintMovement = null; // new Helpers.HermiteSpline((Vector2)transform.position, currentMovement.EvaluateAt(relativeTime), start);
         //int numDots = this.
+    }
+
+    public void ShowHint()
+    {
+        if (hintMovement == null)
+            return;
     }
 }
