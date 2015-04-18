@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 	private const float JUMP_MAX_DISTANCE = 5.0f;
 
 	// If the player position is below, this height, it will be reset to its start position.
-	private const float SUNK_HEIGHT = -4.0f;
+	private const float SUNK_HEIGHT = -7.0f;
 
 	private float lastTapTime = -999999.0f;
 
@@ -32,18 +32,22 @@ public class Player : MonoBehaviour
 		private set;
 	}
 
+	/// <summary>
+	/// Current jump status. 0 just started, 1 done.
+	/// </summary>
+	public float JumpTimer
+	{
+		get;
+		private set;
+	}
+
 	// Use this for initialization
 	void Start()
 	{
-		TouchInput.onTapRelease += JumpTap;
-
 		startPosition = transform.position;
-		if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
-		{
-			startFloe = transform.parent.GetComponent<IceFloe>();
-		}
-		else
-			Debug.LogError("Please attach the player to a starting IceFloe!");
+		// Start floe is initialized later...
+
+		TouchInput.onTapRelease += JumpTap;
 
 		gameController = GameObject.FindObjectOfType<PP_GameController>();
 		if(gameController == null)
@@ -69,19 +73,31 @@ public class Player : MonoBehaviour
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
 			else
 				Debug.Log("Too far away.");
-		}	
+		}
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		// Can't do this in the Start function.
+		// Yes I should just make it a public attribute that needs to be assigned in the editor... but then again something will be broken.
+		// ... so please don't hurt me for this little hack...
+		if (startFloe == null)
+		{
+			if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
+			{
+				startFloe = transform.parent.GetComponent<IceFloe>();
+			}
+			else
+				Debug.LogError("Please attach the player to a starting IceFloe!");
+		}
 	}
 
 	IEnumerator Jump(Vector3 destination)
 	{
 		transform.parent = null; // Detach from IceFloe
 
-		float jumpTimer = 0.0f;
+		JumpTimer = 0.0f;
 
 		// Compute jump spline
 		List<Vector3> points = new List<Vector3>();
@@ -100,9 +116,9 @@ public class Player : MonoBehaviour
 
 		while (transform.parent == null) // Not yet reattached to an icefloe
 		{
-			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
+			transform.position = bezierPath.CalculateBezierPoint(0, JumpTimer);
 			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
-			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
+			JumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 
 			if (transform.position.y < SUNK_HEIGHT)
 			{

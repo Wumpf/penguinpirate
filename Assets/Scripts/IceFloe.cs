@@ -5,18 +5,22 @@ using System.Linq;
 public class IceFloe : MonoBehaviour
 {
 	private const float SINK_MOVEMENT = 0.05f;
-	private const float SUNK_HEIGHT = -1.56f;
+	private const float SUNK_HEIGHT = -1.7f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
 
+	private UIControl UIScript;
+
 	// Use this for initialization
 	void OnEnable()
 	{
 		startPosition = transform.position;
 		startOrientation = transform.rotation;
+
+		UIScript = GameObject.Find("UI_Control").GetComponent<UIControl>();
 	}
 
 	/// <summary>
@@ -36,6 +40,9 @@ public class IceFloe : MonoBehaviour
 		{
 			transform.Translate(0, -SINK_MOVEMENT * Time.deltaTime, 0);
 
+			UIScript.iceFloeTTL = ((SUNK_HEIGHT - transform.position.y) / (SUNK_HEIGHT - startPosition.y)) * 100;
+
+
 			if (transform.position.y < SUNK_HEIGHT)
 			{
 				Debug.Log("icefloe with player has sunk. You lost.");
@@ -50,7 +57,7 @@ public class IceFloe : MonoBehaviour
 	void OnCollisionEnter(Collision col)
 	{
 		Player player = col.gameObject.GetComponent<Player>();
-		if (player != null && col.gameObject != transform.parent)
+		if (player != null && col.gameObject != transform.parent && player.JumpTimer > 0.5f)
 		{
 			Quaternion rotation = col.gameObject.transform.rotation;
 			col.gameObject.transform.parent = transform;
