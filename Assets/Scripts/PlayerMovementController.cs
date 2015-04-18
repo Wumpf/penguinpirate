@@ -19,13 +19,10 @@ class PlayerMovementController : MonoBehaviour{
     // Time ranging from 0 to 1. 
     private float relativeTime;
 
-    Helpers.HermiteSpline path;
-
 	// Use this for initialization
     public void Start()
     {
         touching = false;
-        path = null;
 
         hintSplineDots = new GameObject[10];
         for(int i = 0; i < hintSplineDots.Length; ++i)
@@ -66,7 +63,15 @@ class PlayerMovementController : MonoBehaviour{
 
     void FixedUpdate()
     {
+        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
+        if(iceFloe == null)
+        {
+            return;
+        }
 
+        float currentT;
+        currentMovement.GetNearestPosition((Vector2)Position, out currentT);
+        iceFloe.AddForce(currentMovement.DirectionAt(currentT));
     }
 
     public void ChangeHint(Vector2 start, Vector2 direction)
