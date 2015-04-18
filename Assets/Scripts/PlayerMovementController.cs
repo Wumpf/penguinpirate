@@ -12,8 +12,8 @@ class PlayerMovementController : MonoBehaviour
 
     public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
-    private Helpers.HermiteSpline currentMovement;
-    private Helpers.HermiteSpline hintMovement;
+    private Helpers.HermiteSpline path;
+    private Helpers.HermiteSpline hintPath;
 
     public GameObject dot;
     private GameObject[] hintSplineDots;
@@ -44,61 +44,62 @@ class PlayerMovementController : MonoBehaviour
     private void UpdateCurrentMovement()
     {
         Vector3 startPosition = Position;
-        Vector3 startMovement = transform.forward;
+        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
+        Debug.Log(startMovement);
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
         Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
         if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
         {
-            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
+            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
         }
         else
         {
-            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
         }
     }
-
-    float t = 0;
 
     void Update()
     {
     }
-    
-    
+
     void FixedUpdate()
     {
-        if(transform.parent != null)
-        {
-            Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-            if (iceFloe == null)
-            {
-                return;
-            }
+        if (transform.parent == null || path == null)
+            return;
 
-            float currentT;
-            if(currentMovement != null)
-            {
-                currentMovement.GetNearestPosition(Position, out currentT);
-                iceFloe.AddForce(currentMovement.DirectionAt(currentT));
-            }
-        }
+        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
+        if (iceFloe == null)
+            return;
+
+
+        float currentT;
+        path.GetNearestPosition(Position, out currentT);
+
+        Vector3 movement;
+        movement = path.MovementAt(currentT);
+        movement *= Time.fixedDeltaTime / path.Length;
+        movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
+
+        iceFloe.velocity = movement;
+
     }
 
     public void ChangeHint(Vector3 start, Vector3 direction)
     {
-        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start, direction);
+        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start, direction);
         ShowHint();
     }
 
     public void ChangeHint(Vector3 start)
     {
-        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start);
+        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start);
         ShowHint();     
     }
 
     public void ResetHint()
     {
-        hintMovement = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
+        hintPath = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
         foreach (GameObject hintDot in hintSplineDots)
             hintDot.SetActive(false);
 
@@ -107,22 +108,23 @@ class PlayerMovementController : MonoBehaviour
 
     public void ShowHint()
     {
-        if (hintMovement == null)
+        if (hintPath == null)
             return;
 
         for (int i = 0; i < hintSplineDots.Length; ++i)
         {
-            hintSplineDots[i].transform.position = hintMovement.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
+            hintSplineDots[i].transform.position = hintPath.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
             hintSplineDots[i].SetActive(true);
         }
     }
 
     void OnDrawGizmos()
     {
-        if (currentMovement != null)
+        if (path != null)
         {
-            Gizmos.DrawLine(currentMovement.StartPosition, currentMovement.StartPosition + Vector3.up * 2F);
-            Gizmos.DrawLine(currentMovement.FinalPosition, currentMovement.FinalPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(path.StartPosition, path.StartPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(path.FinalPosition, path.FinalPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(path.GetNearestPosition(Position), path.GetNearestPosition(Position) + Vector3.up * 2F);
         }
         DrawCurrentMovement();
     }
@@ -130,12 +132,12 @@ class PlayerMovementController : MonoBehaviour
     void DrawCurrentMovement()
     {
         Gizmos.color = Color.white;
-        if (currentMovement != null)
+        if (path != null)
         {
             float stepSize = 0.05F;
             for (float t = 0F; t <= 1F; t += stepSize)
             {
-                Gizmos.DrawSphere(currentMovement.EvaluateAt(t), 0.1F);
+                Gizmos.DrawSphere(path.EvaluateAt(t), 0.1F);
             }
         }
 
