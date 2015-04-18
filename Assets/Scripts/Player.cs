@@ -147,7 +147,9 @@ public class Player : MonoBehaviour
 
 		else if(col.gameObject.tag == "Goal")
 		{
+			StopCoroutine("Jump");
 			gameController.updateGameLevels();
+
 		}
 	}
 }
