@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
 		bezierPath.SetControlPoints(points);
 		List<Vector3> drawingPoints = bezierPath.GetDrawingPoints0();
 
+		destination.y = transform.position.y;
 		LastJumpDirectionWorld = destination - transform.position;
 		LastJumpDirectionWorld.Normalize();
 
