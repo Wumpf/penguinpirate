@@ -10,6 +10,9 @@ public class IceFloe : MonoBehaviour
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
+	private Vector3 startPosition;
+	private Quaternion startOrientation;
+
 	/// <summary>
 	/// If below zero, the shelf is gone and the player on it has lost.
 	/// </summary>
@@ -20,9 +23,19 @@ public class IceFloe : MonoBehaviour
 	private float sinkPercentage = 1.0f;
 
 	// Use this for initialization
-	void Start()
+	void OnEnable()
 	{
+		startPosition = transform.position;
+		startOrientation = transform.rotation;
+	}
 
+	/// <summary>
+	/// Resets position and orientation to original
+	/// </summary>
+	public void Reset()
+	{
+		transform.position = startPosition;
+		transform.rotation = startOrientation;
 	}
 
 	// Update is called once per frame

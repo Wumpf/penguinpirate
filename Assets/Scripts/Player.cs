@@ -9,7 +9,14 @@ public class Player : MonoBehaviour
 	private const float JUMP_HEIGHT = 5.0f;
 	private const float JUMP_MAX_DISTANCE = 5.0f;
 
+	// If the player position is below, this height, it will be reset to its start position.
+	private const float SUNK_HEIGHT = -4.0f;
+
 	private float lastTapTime = -999999.0f;
+
+	private Vector3 startPosition;
+	private IceFloe startFloe;
+	
 
 	public TouchInput TouchInput;
 
@@ -28,6 +35,20 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		TouchInput.onTapRelease += JumpTap;
+
+		startPosition = transform.position;
+		if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
+		{
+			startFloe = transform.parent.GetComponent<IceFloe>();
+		}
+		else
+			Debug.LogError("Please attach the player to a starting IceFloe!");
+	}
+
+	public void Reset()
+	{
+		transform.position = startPosition;
+		transform.parent = startFloe.transform;
 	}
 
 	void JumpTap()
@@ -73,8 +94,21 @@ public class Player : MonoBehaviour
 		{
 			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
 			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
-
 			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
+
+			if (transform.position.y < SUNK_HEIGHT)
+			{
+				Reset();
+
+				// Reset all floes
+				var allIceFloes = GameObject.FindObjectsOfType<IceFloe>();
+				foreach(var iceFloe in allIceFloes)
+					iceFloe.Reset();
+
+				Debug.Log("Reset position");
+				yield return null;
+			}
+
 			yield return new WaitForFixedUpdate();
 		}
 		yield return null;
