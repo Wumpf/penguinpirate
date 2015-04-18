@@ -14,7 +14,7 @@ public class TouchInput : MonoBehaviour
     /// <summary>
     /// Plane used for picking (used for getting a jump destination)
     /// </summary>
-    private Plane groundplane = new Plane(Vector3.up, 0.0f);
+    private Plane groundplane = new Plane(Vector3.up, 1.0f);
 
 
     /// <summary>whether the player touches the screen / mouse button is down</summary>
@@ -61,21 +61,21 @@ public class TouchInput : MonoBehaviour
         bool tapStart = !tapping && Input.GetMouseButtonDown(0);
         bool tapRelease = tapping && Input.GetMouseButtonUp(0);
 
-        if (tapStart)
-        {
-            tapping = true;
-            lastTapStartTime = Time.time;
-        }
-        else if (tapRelease)
-        {
-            tapping = false;
-            lastTapReleaseTime = Time.time;
-        }
+		if (tapStart)
+		{
+			tapping = true;
+			lastTapStartTime = Time.time;
+		}
+		else if (tapRelease)
+		{
+			tapping = false;
+			lastTapReleaseTime = Time.time;
+		}
 
 
         PositionInfo currentPosition = new PositionInfo();
 
-        if (tapping)
+        //if (tapping)
         {
             currentPosition.screenPosition = Input.mousePosition;   // TODO make compatible to tap!
 
@@ -98,12 +98,14 @@ public class TouchInput : MonoBehaviour
         if (tapStart)
         {
             lastTapStartPosition = currentPosition;
-            onTapStart.Invoke();
+            if(onTapStart != null)
+				onTapStart.Invoke();
         }
         else if (tapRelease)
         {
             lastTapReleasePosition = currentPosition;
-            onTapRelease.Invoke();
+            if(onTapRelease != null)
+				onTapRelease.Invoke();
         }
     }
 }
