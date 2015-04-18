@@ -15,6 +15,12 @@ public class Player : MonoBehaviour
 	/// </summary>
 	private Plane groundplane = new Plane(Vector3.up, 0.0f);
 
+	public Vector3 LastJumpDirectionWorld
+	{
+		get;
+		private set;
+	}
+
 	// Use this for initialization
 	void Start()
 	{
@@ -60,10 +66,13 @@ public class Player : MonoBehaviour
 		bezierPath.SetControlPoints(points);
 		List<Vector3> drawingPoints = bezierPath.GetDrawingPoints0();
 
+		LastJumpDirectionWorld = destination - transform.position;
+		LastJumpDirectionWorld.Normalize();
 
 		while (transform.parent == null) // Not yet reattached to an icefloe
 		{
 			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
+			transform.forward = Vector3.Slerp(LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time));
 
 			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 			yield return new WaitForFixedUpdate();

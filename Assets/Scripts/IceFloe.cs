@@ -11,6 +11,8 @@ public class IceFloe : MonoBehaviour
 	/// </summary>
 	private const float SINK_TO_Y = 1.0f;
 
+	private const float JUMP_FORCE_FACTOR = 3.0f;
+
 	/// <summary>
 	/// If below zero, the shelf is gone and the player on it has lost.
 	/// </summary>
@@ -41,5 +43,18 @@ public class IceFloe : MonoBehaviour
 		}
 
 		// TODO add some buoyancy animation :)
+	}
+
+
+	void OnCollisionEnter(Collision col)
+	{
+		Player player = col.gameObject.GetComponent<Player>();
+		if (player != null && col.gameObject != transform.parent)
+		{
+			Quaternion rotation = col.gameObject.transform.rotation;
+			col.gameObject.transform.parent = transform;
+			col.gameObject.transform.rotation = rotation;
+			this.GetComponent<Rigidbody>().AddForce(player.LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
+		}
 	}
 }
