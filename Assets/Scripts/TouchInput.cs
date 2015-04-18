@@ -14,7 +14,7 @@ public class TouchInput : MonoBehaviour
     /// <summary>
     /// Plane used for picking (used for getting a jump destination)
     /// </summary>
-    private Plane groundplane = new Plane(Vector3.up, 0.0f);
+    private Plane groundplane = new Plane(Vector3.up, 1.0f);
 
 
     /// <summary>whether the player touches the screen / mouse button is down</summary>
