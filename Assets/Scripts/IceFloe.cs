@@ -57,7 +57,7 @@ public class IceFloe : MonoBehaviour
 	void OnCollisionEnter(Collision col)
 	{
 		Player player = col.gameObject.GetComponent<Player>();
-		if (player != null && col.gameObject != transform.parent)
+		if (player != null && col.gameObject != transform.parent && player.JumpTimer > 0.5f)
 		{
 			Quaternion rotation = col.gameObject.transform.rotation;
 			col.gameObject.transform.parent = transform;
