@@ -7,7 +7,6 @@ public class IceFloe : MonoBehaviour
 	private const float SINK_MOVEMENT = 0.05f;
 	private const float SUNK_HEIGHT = -1.7f;
 
-	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
@@ -51,18 +50,5 @@ public class IceFloe : MonoBehaviour
 		}
 
 		// TODO add some buoyancy animation :)
-	}
-
-
-	void OnCollisionEnter(Collision col)
-	{
-		Player player = col.gameObject.GetComponent<Player>();
-		if (player != null && col.gameObject != transform.parent && player.JumpTimer > 0.5f)
-		{
-			Quaternion rotation = col.gameObject.transform.rotation;
-			col.gameObject.transform.parent = transform;
-			col.gameObject.transform.rotation = rotation;
-			this.GetComponent<Rigidbody>().AddForce(player.LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
-		}
 	}
 }

@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 	private const float JUMP_HEIGHT = 5.0f;
 	private const float JUMP_MAX_DISTANCE = 5.0f;
 
+	private const float JUMP_FORCE_FACTOR = 1.0f;
+
 	// If the player position is below, this height, it will be reset to its start position.
 	private const float SUNK_HEIGHT = -7.0f;
 
@@ -130,5 +132,22 @@ public class Player : MonoBehaviour
 			yield return new WaitForFixedUpdate();
 		}
 		yield return null;
+	}
+
+	void OnCollisionEnter(Collision col)
+	{
+		IceFloe iceFloe = col.gameObject.GetComponent<IceFloe>();
+		if (iceFloe != null && iceFloe != transform.parent && JumpTimer > 0.5f)
+		{
+			Quaternion rotation = transform.rotation;
+			transform.parent = iceFloe.transform;
+			transform.rotation = rotation;
+			iceFloe.GetComponent<Rigidbody>().AddForce(LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
+		}
+
+		else if(col.gameObject.tag == "Goal")
+		{
+			gameController.updateGameLevels();
+		}
 	}
 }
