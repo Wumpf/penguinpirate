@@ -10,14 +10,15 @@ public class WaterCollision : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collidedObj){
 
-		if (collidedObj.gameObject.name == "Player"){
+		if (collidedObj.gameObject.name == "Player" || collidedObj.transform.parent.gameObject.name == "IceFloePlayer"){
 
 			//play water splash sound
 			aSource.clip = waterSplashSfx;
 			aSource.Play();
 
 			// instantiate a particle system of water splash
-			GameObject splash = Instantiate(waterSplash,collidedObj.transform.localPosition,Quaternion.identity) as GameObject;
+			Vector3 waterSplashPos = new Vector3(collidedObj.transform.position.x,collidedObj.transform.position.y+1f,collidedObj.transform.position.z);
+			GameObject splash = Instantiate(waterSplash,waterSplashPos,Quaternion.identity) as GameObject;
 			ParticleSystem ps = splash.GetComponent<ParticleSystem>();
 			Destroy(splash,ps.duration);
 			}

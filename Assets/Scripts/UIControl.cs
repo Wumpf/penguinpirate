@@ -22,6 +22,8 @@ public class UIControl : MonoBehaviour {
 	}
 
 	public void retryLevel() {
-		Application.LoadLevel("PenguinPirate");
+		//Application.LoadLevel("PenguinPirate");
+		PP_GameController gameCtrl = Camera.main.GetComponent<PP_GameController>();
+		gameCtrl.resetTheGameState();
 	}
 }
