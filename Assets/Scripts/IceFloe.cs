@@ -5,7 +5,7 @@ using System.Linq;
 public class IceFloe : MonoBehaviour
 {
 	private const float SINK_MOVEMENT = 0.01f;//0.05f;
-	private const float SUNK_HEIGHT = 0f;
+	public const float SUNK_HEIGHT = 0f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;

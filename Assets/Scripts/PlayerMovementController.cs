@@ -6,7 +6,6 @@ class PlayerMovementController : MonoBehaviour
 {
     public TouchInput touchInput;
 
-    public static float TAP_DURATION = 0.15f;
 
     public float MIN_START_SPEED;
 
