@@ -68,9 +68,9 @@ public class PP_GameController : MonoBehaviour {
 		prevLevelObj.SetActive (false);
 
 		//animate camera to the new Level Position, pan to right position only
-		iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
+		/*iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
 		                                                  Camera.main.transform.position.z),1.0f);
-
+        */
 		bannerAnimationPlayed = false;
 	}
 
