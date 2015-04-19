@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
 			{
 				        transform.parent = null; // Detach from IceFloe
         GetComponent<PlayerMovementController>().currentFloe = null;
+				gameController.playSoundEffect("Jump");
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
 			}
 			else
