@@ -14,6 +14,7 @@ public class MenuController : MonoBehaviour {
 	}
 
 	public void playGame() {
+		PlayerPrefs.SetInt ("CurrentLevel",1);
 		Application.LoadLevel("PenguinPirate");
 	}
 

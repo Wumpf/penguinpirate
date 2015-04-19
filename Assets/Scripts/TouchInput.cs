@@ -14,7 +14,7 @@ public class TouchInput : MonoBehaviour
     /// <summary>
     /// Plane used for picking (used for getting a jump destination)
     /// </summary>
-    private Plane groundplane = new Plane(Vector3.up, 1.0f);
+    private Plane groundplane = new Plane(Vector3.up, 0.0f);
 
 
     /// <summary>whether the player touches the screen / mouse button is down</summary>
@@ -77,7 +77,7 @@ public class TouchInput : MonoBehaviour
 
         //if (tapping)
         {
-            currentPosition.screenPosition = Input.mousePosition;   // TODO make compatible to tap!
+            currentPosition.screenPosition = Input.mousePosition;
 
             Ray pickingRay = Camera.main.ScreenPointToRay(currentPosition.screenPosition);
             float rayDist;

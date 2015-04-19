@@ -4,20 +4,17 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-    public const float JUMP_DURATION = 2.0f;
+    public const float JUMP_DURATION = 1.5f;
     public const float JUMP_TAP_DURATION = 0.15f;
     public const float JUMP_HEIGHT = 5.0f;
-    public const float JUMP_MAX_DISTANCE = 5.0f;
+    public const float JUMP_MAX_DISTANCE = 7.0f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
-	// If the player position is below, this height, it will be reset to its start position.
-	private const float SUNK_HEIGHT = -7.0f;
 
 	private float lastTapTime = -999999.0f;
 
 	private Vector3 startPosition;
-	private IceFloe startFloe;
 	
 
 	public TouchInput TouchInput;
@@ -47,7 +44,6 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		startPosition = transform.position;
-		// Start floe is initialized later...
 
 		TouchInput.onTapRelease += JumpTap;
 
@@ -60,9 +56,11 @@ public class Player : MonoBehaviour
 
 	public void Reset()
 	{
-        // TODO: somehow Player does not reset its Position....
-		transform.position = startPosition;
+		GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
+        transform.position = Vector3.up * 0.84F;
         transform.parent = startFloe.transform;
+		startFloe.transform.position = Vector3.zero;
+
         GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
 	}
 
@@ -74,7 +72,12 @@ public class Player : MonoBehaviour
 		{
 			Vector3 destination = TouchInput.lastTapReleasePosition.groundPosition;
 			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE)
+			{
+				        transform.parent = null; // Detach from IceFloe
+        GetComponent<PlayerMovementController>().currentFloe = null;
+				gameController.playSoundEffect("Jump");
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+			}
 			else
 				Debug.Log("Too far away.");
 		}
@@ -83,26 +86,10 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// Can't do this in the Start function.
-		// Yes I should just make it a public attribute that needs to be assigned in the editor... but then again something will be broken.
-		// ... so please don't hurt me for this little hack...
-		if (startFloe == null)
-		{
-			if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
-			{
-                startFloe = transform.parent.GetComponent<IceFloe>();
-                GetComponent<PlayerMovementController>().currentFloe = startFloe;
-			}
-			else
-				Debug.LogError("Please attach the player to a starting IceFloe!");
-		}
 	}
 
 	IEnumerator Jump(Vector3 destination)
 	{
-        transform.parent = null; // Detach from IceFloe
-        GetComponent<PlayerMovementController>().currentFloe = null;
-
 		JumpTimer = 0.0f;
 
 		// Compute jump spline
@@ -126,7 +113,7 @@ public class Player : MonoBehaviour
 			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
 			JumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 
-			if (transform.position.y < SUNK_HEIGHT)
+			if (GetComponent<Collider>().bounds.max.y < IceFloe.SUNK_HEIGHT)
 			{
 				Debug.Log("Player has jumped into the water. You lost.");
 				gameController.gameEndStatus();

@@ -2,14 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public enum PlayerStates{
-	idle=0,
-	jumping=1,
-	falling=2,
-	sinking=3,
-	died
-};
-
 public class PP_GameController : MonoBehaviour {
 	
 	public int currentLevel =1;
@@ -19,11 +11,35 @@ public class PP_GameController : MonoBehaviour {
 	private bool bannerAnimationPlayed=false;
 	private bool didUpdateLevel=false;
 
+	public AudioClip jumpSfx,celebSfx,waterSplash,crying;
+	public AudioSource aSource;
+
+	void Start(){
+		PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
+	}
+
+
+	public void playSoundEffect(string _name){
+
+		if(_name=="Jump")
+			aSource.clip = jumpSfx;
+		else if(_name=="Celeb")
+			aSource.clip = celebSfx;
+//		else if(_name=="WaterSplash")
+//			aSource.clip = waterSplash;
+		else if(_name=="Lose")
+			aSource.clip = crying;
+
+		aSource.Play();
+	}
+
 	public void updateGameLevels(){
 		// increment game level when player has reached ISLAND
-			currentLevel++;
+			currentLevel = 2;//currentLevel++; HARD CODED
+			PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
 			levelCount.GetComponent<Text> ().text = currentLevel.ToString ();
 			// when level has been incremented, switch to new level enable
+			playSoundEffect("Celeb");
 			animateTheBannerMessage ("You've done it!", true);
 	}
 
@@ -49,6 +65,7 @@ public class PP_GameController : MonoBehaviour {
 		}
 
 	void switchToNextLevelAfterSomePause(){
+	
 		bannerAnimationPlayed = true;
 		CancelInvoke("panCameraToNextLevel");
 		Invoke("panCameraToNextLevel",0.5f);
@@ -61,16 +78,21 @@ public class PP_GameController : MonoBehaviour {
 			bannerObj.SetActive (false);
 		}
 
+		// reset the game state here
+		resetTheGameState ();
+
 		GameObject currentLevelObj = allLevels.transform.FindChild(currentLevel.ToString()).gameObject;
-		currentLevelObj.SetActive (true);
+		if(currentLevelObj!=null)
+			currentLevelObj.SetActive (true);
 
 		GameObject prevLevelObj = allLevels.transform.FindChild((currentLevel-1).ToString()).gameObject;
-		prevLevelObj.SetActive (false);
+		if(currentLevelObj!=null)
+			prevLevelObj.SetActive (false);
 
 		//animate camera to the new Level Position, pan to right position only
-		iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
+		/*iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
 		                                                  Camera.main.transform.position.z),1.0f);
-
+        */
 		bannerAnimationPlayed = false;
 	}
 
@@ -82,6 +104,8 @@ public class PP_GameController : MonoBehaviour {
 		}
 
 	public void resetTheGameState(){
+		currentLevel = PlayerPrefs.GetInt ("CurrentLevel");
+
 		//disable the banner
 		if(bannerObj != null && bannerObj.activeSelf == true) {
 			bannerObj.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
@@ -98,11 +122,18 @@ public class PP_GameController : MonoBehaviour {
 		foreach (var player in players)
 			player.Reset();
 
+        CameraController cam = GetComponent<CameraController>();
+        if(cam != null)
+        {
+            cam.Player = players[0].transform;
+        }
+
 		bannerAnimationPlayed = false;
 		didUpdateLevel =false;
 		}
 
-	public void gameEndStatus(){ 	
+	public void gameEndStatus(){ 
+		playSoundEffect("Lose");
 		animateTheBannerMessage("You've lost it!",false);
 	}
 

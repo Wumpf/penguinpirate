@@ -6,9 +6,8 @@ class PlayerMovementController : MonoBehaviour
 {
     public TouchInput touchInput;
 
-    public static float SECONDS_PER_SPLINE = 10;
-    public static float MIN_DIRECTION_SIZE_PIXELS = 10;
-    public static float TAP_DURATION = 0.15f;
+
+    public float MIN_START_SPEED;
 
     public float MaxSpeed;
 
@@ -76,12 +75,13 @@ class PlayerMovementController : MonoBehaviour
         Vector3 startPosition = Position;
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
 
-        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
-        if (startMovement.magnitude < 1F)
+        Vector3 startMovement = currentFloe != null ? currentFloe.GetComponent<Rigidbody>().velocity : (targetPosition - startPosition).normalized;
+        if (startMovement.magnitude < MIN_START_SPEED)
         {
-            startMovement = (targetPosition - startPosition).normalized;
-            if (transform.parent != null && transform.parent.GetComponent<Rigidbody>())
-                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
+            startMovement.Normalize();
+            startMovement *= MIN_START_SPEED;
+            if (currentFloe != null)
+                currentFloe.GetComponent<Rigidbody>().velocity = startMovement;
         }
         Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
@@ -91,18 +91,13 @@ class PlayerMovementController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        Debug.Log(currentFloe);
-    }
-
     void FixedUpdate()
     {
         if (transform.parent == null || path == null)
             return;
 
-        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-        if (iceFloe == null)
+        Rigidbody iceFloeRB = transform.parent.GetComponent<Rigidbody>();
+        if (iceFloeRB == null)
             return;
 
         float currentT;
@@ -111,14 +106,12 @@ class PlayerMovementController : MonoBehaviour
         Vector3 movement;
         movement = path.MovementAt(currentT);
         movement *= Time.fixedDeltaTime / path.Length;
-        movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
         movement *= SpeedFactor;
         movement.y = 0F;
-        if (movement.sqrMagnitude > MaxSpeed)
+        if (movement.sqrMagnitude > MaxSpeed * MaxSpeed)
             movement = movement.normalized * MaxSpeed;
 
-
-        iceFloe.velocity = movement;
+        iceFloeRB.velocity = movement;
     }
 
     public void ChangeHint(Vector3 start, Vector3 direction)
