@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 422038}
   - 111: {fileID: 11187184}
+  - 136: {fileID: 13681290}
   m_Layer: 0
   m_Name: buoy
   m_TagString: Untagged
@@ -91,7 +92,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173546}
   m_LocalRotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
-  m_LocalPosition: {x: -.779999971, y: -.0299999993, z: -4.73000002}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 493702}
@@ -286,6 +287,19 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!136 &13681290
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173546}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: .349999994
+  m_Height: 1.96000004
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: .289999992}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchInput: {fileID: 11486224}
-  MaxSpeed: 0
+  MaxSpeed: 8
   SpeedFactor: 50
   dot: {fileID: 0}
 --- !u!114 &11486224

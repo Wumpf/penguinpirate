@@ -60,8 +60,10 @@ public class Player : MonoBehaviour
 
 	public void Reset()
 	{
+        // TODO: somehow Player does not reset its Position....
 		transform.position = startPosition;
-		transform.parent = startFloe.transform;
+        transform.parent = startFloe.transform;
+        GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
 	}
 
 	void JumpTap()
@@ -88,7 +90,8 @@ public class Player : MonoBehaviour
 		{
 			if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
 			{
-				startFloe = transform.parent.GetComponent<IceFloe>();
+                startFloe = transform.parent.GetComponent<IceFloe>();
+                GetComponent<PlayerMovementController>().currentFloe = startFloe;
 			}
 			else
 				Debug.LogError("Please attach the player to a starting IceFloe!");
@@ -97,7 +100,8 @@ public class Player : MonoBehaviour
 
 	IEnumerator Jump(Vector3 destination)
 	{
-		transform.parent = null; // Detach from IceFloe
+        transform.parent = null; // Detach from IceFloe
+        GetComponent<PlayerMovementController>().currentFloe = null;
 
 		JumpTimer = 0.0f;
 
@@ -143,6 +147,8 @@ public class Player : MonoBehaviour
 			transform.parent = iceFloe.transform;
 			transform.rotation = rotation;
 			iceFloe.GetComponent<Rigidbody>().AddForce(LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
+
+            GetComponent<PlayerMovementController>().currentFloe = iceFloe;
 		}
 
 		else if(col.gameObject.tag == "Goal")
