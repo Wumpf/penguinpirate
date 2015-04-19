@@ -87,15 +87,16 @@ public class PP_GameController : MonoBehaviour {
 			bannerObj.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 			bannerObj.SetActive (false);
 			}
-		// Reset player
-		var players = GameObject.FindObjectsOfType<Player>();
-		foreach (var player in players)
-			player.Reset();
-		
+
 		// Reset all floes
 		var allIceFloes = GameObject.FindObjectsOfType<IceFloe>();
 		foreach (var iceFloe in allIceFloes)
 			iceFloe.Reset(); 
+
+		// Reset player
+		var players = GameObject.FindObjectsOfType<Player>();
+		foreach (var player in players)
+			player.Reset();
 
 		bannerAnimationPlayed = false;
 		didUpdateLevel =false;

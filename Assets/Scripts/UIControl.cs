@@ -5,16 +5,18 @@ using UnityEngine.UI;
 public class UIControl : MonoBehaviour {
 
 	public float iceFloeTTL = 100;
+	public Image iceFloeTTLImage;
+
 	private Text textField;
+	 
 
 	// Use this for initialization
 	void Start () {
-		textField = GameObject.Find("SCount").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		textField.text = ((int)iceFloeTTL).ToString() + " %";
+		iceFloeTTLImage.GetComponent<Image>().fillAmount = iceFloeTTL/100;
 	}
 
 	public void switchToMenu() {
@@ -22,7 +24,6 @@ public class UIControl : MonoBehaviour {
 	}
 
 	public void retryLevel() {
-		//Application.LoadLevel("PenguinPirate");
 		PP_GameController gameCtrl = Camera.main.GetComponent<PP_GameController>();
 		gameCtrl.resetTheGameState();
 	}
