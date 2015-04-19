@@ -40,7 +40,8 @@ class PlayerMovementController : MonoBehaviour
     private Helpers.HermiteSpline hintPath;
 
     public GameObject dot;
-    private GameObject[] hintSplineDots;
+    private GameObject[] HintDots;
+    private GameObject[] PathDots;
 
     private bool touching;
     private Vector3 touchStart;
@@ -56,13 +57,17 @@ class PlayerMovementController : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
-        touchInput.onTapRelease += UpdateCurrentMovement;
+        touchInput.onTapRelease += UpdatePath;
 
         touching = false;
 
-        hintSplineDots = new GameObject[10];
-        for (int i = 0; i < hintSplineDots.Length; ++i)
-            hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+        PathDots = new GameObject[10];
+        HintDots = new GameObject[10];
+        for (int i = 0; i < PathDots.Length; ++i)
+        {
+            PathDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+            //HintDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+        }
     }
 
     private void ResetPath(Collision col)
@@ -71,24 +76,42 @@ class PlayerMovementController : MonoBehaviour
         path = null;
     }
 
-    private void UpdateCurrentMovement()
+    private void UpdatePath()
     {
         Vector3 startPosition = Position;
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
 
-        Vector3 startMovement = currentFloe != null ? currentFloe.GetComponent<Rigidbody>().velocity : (targetPosition - startPosition).normalized;
+        Vector3 startMovement;
+        if (transform.parent != null && transform.parent.GetComponent<Rigidbody>().velocity.sqrMagnitude > 0F)
+            startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
+        else
+            startMovement = (targetPosition - startPosition).normalized;
+
         if (startMovement.magnitude < MIN_START_SPEED)
         {
             startMovement.Normalize();
             startMovement *= MIN_START_SPEED;
-            if (currentFloe != null)
-                currentFloe.GetComponent<Rigidbody>().velocity = startMovement;
+            if (transform.parent != null)
+            {
+                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
+            }
         }
+
         Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
-        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
+        if (touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
         {
             path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+        }
+    }
+
+    void Update()
+    {
+        for (int i = 0; i < PathDots.Length; ++i)
+        {
+            PathDots[i].SetActive(path != null);
+            if (path != null)
+                PathDots[i].transform.position = path.EvaluateAt((float)(1 + i) * 1F / (float)PathDots.Length);
         }
     }
 
@@ -106,46 +129,13 @@ class PlayerMovementController : MonoBehaviour
 
         Vector3 movement;
         movement = path.MovementAt(currentT);
-        movement *= Time.fixedDeltaTime / path.Length;
+        movement *= Time.fixedDeltaTime;
         movement *= SpeedFactor;
         movement.y = 0F;
         if (movement.sqrMagnitude > MaxSpeed * MaxSpeed)
             movement = movement.normalized * MaxSpeed;
 
         iceFloeRB.velocity = movement;
-    }
-
-    public void ChangeHint(Vector3 start, Vector3 direction)
-    {
-        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start, direction);
-        ShowHint();
-    }
-
-    public void ChangeHint(Vector3 start)
-    {
-        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start);
-        ShowHint();     
-    }
-
-    public void ResetHint()
-    {
-        hintPath = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
-        foreach (GameObject hintDot in hintSplineDots)
-            hintDot.SetActive(false);
-
-        //int numDots = this.
-    }
-
-    public void ShowHint()
-    {
-        if (hintPath == null)
-            return;
-
-        for (int i = 0; i < hintSplineDots.Length; ++i)
-        {
-            hintSplineDots[i].transform.position = hintPath.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
-            hintSplineDots[i].SetActive(true);
-        }
     }
 
     void OnDrawGizmos()
