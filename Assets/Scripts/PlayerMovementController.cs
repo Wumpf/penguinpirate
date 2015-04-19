@@ -8,7 +8,6 @@ class PlayerMovementController : MonoBehaviour
 
     public static float SECONDS_PER_SPLINE = 10;
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
-    public static float TAP_DURATION = 0.15f;
 
     public float MaxSpeed;
 
@@ -61,6 +60,8 @@ class PlayerMovementController : MonoBehaviour
         touching = false;
 
         hintSplineDots = new GameObject[10];
+		if (dot == null)
+			return;
         for (int i = 0; i < hintSplineDots.Length; ++i)
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
@@ -73,22 +74,23 @@ class PlayerMovementController : MonoBehaviour
 
     private void UpdateCurrentMovement()
     {
+		if (transform.parent == null)
+			return;
+
         Vector3 startPosition = Position;
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
 
-        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
-        if (startMovement.magnitude < 1F)
-        {
-            startMovement = (targetPosition - startPosition).normalized;
-            if (transform.parent != null && transform.parent.GetComponent<Rigidbody>())
-                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
-        }
-        Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+			Vector3 startMovement = transform.parent.GetComponent<Rigidbody> ().velocity;
+			if (startMovement.magnitude < 1F) {
+				startMovement = (targetPosition - startPosition).normalized;
+				if (transform.parent != null && transform.parent.GetComponent<Rigidbody> ())
+					transform.parent.GetComponent<Rigidbody> ().velocity = startMovement;
+			}
+			Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
-        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
-        {
-            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
-        }
+			if (touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION) {
+				path = new Helpers.HermiteSpline (startPosition, startMovement, targetPosition, targetMovement);
+			}
     }
 
     void FixedUpdate()

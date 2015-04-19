@@ -72,7 +72,11 @@ public class Player : MonoBehaviour
 		{
 			Vector3 destination = TouchInput.lastTapReleasePosition.groundPosition;
 			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE)
+			{
+				transform.parent = null; // Detach from IceFloe
+				GetComponent<PlayerMovementController>().currentFloe = null;
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+			}
 			else
 				Debug.Log("Too far away.");
 		}
@@ -85,9 +89,6 @@ public class Player : MonoBehaviour
 
 	IEnumerator Jump(Vector3 destination)
 	{
-        transform.parent = null; // Detach from IceFloe
-        GetComponent<PlayerMovementController>().currentFloe = null;
-
 		JumpTimer = 0.0f;
 
 		// Compute jump spline
