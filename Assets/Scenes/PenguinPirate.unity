@@ -1104,6 +1104,10 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 451464838}
   m_Mesh: {fileID: 4300002, guid: bcad9e6146a4e4c5c8382e91f6f66ad5, type: 3}
+--- !u!4 &463971853 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 446338, guid: e7a1f6c7d2dcf4d49bdbc2489d88625d, type: 2}
+  m_PrefabInternal: {fileID: 158095880}
 --- !u!1 &498054962
 GameObject:
   m_ObjectHideFlags: 0
@@ -2914,6 +2918,7 @@ GameObject:
   - 81: {fileID: 1123703699}
   - 45: {fileID: 1123703704}
   - 114: {fileID: 1123703705}
+  - 114: {fileID: 1123703706}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3009,6 +3014,21 @@ MonoBehaviour:
   bannerObj: {fileID: 1895765750}
   levelCount: {fileID: 191859865}
   allLevels: {fileID: 2081695591}
+--- !u!114 &1123703706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1123703698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6700b9919c6aaf84e8e69c330b368a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 463971853}
+  Offset: {x: 10.9099998, y: 42.5, z: 0}
+  Rotation: {x: -.109999999, y: -.519999981, z: 0}
+  ZLerpSpeed: .00999999978
 --- !u!1 &1133451700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3509,7 +3529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1364732539
 Transform:
   m_ObjectHideFlags: 0
