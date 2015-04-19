@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
 
 		TouchInput.onTapRelease += JumpTap;
 
+        GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
+        GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
+
 		gameController = GameObject.FindObjectOfType<PP_GameController>();
 		if(gameController == null)
 		{
