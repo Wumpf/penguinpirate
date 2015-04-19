@@ -75,8 +75,11 @@ public class Player : MonoBehaviour
 			transform.parent != null && transform.parent.GetComponent<IceFloe>())
 		{
 			Vector3 destination = TouchInput.lastTapReleasePosition.groundPosition;
-			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE)
+			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE){
+				//play jump sfx
+				gameController.playSoundEffect("Jump");
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
+				}
 			else
 				Debug.Log("Too far away.");
 		}

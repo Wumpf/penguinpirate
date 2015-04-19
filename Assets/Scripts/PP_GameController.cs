@@ -2,14 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public enum PlayerStates{
-	idle=0,
-	jumping=1,
-	falling=2,
-	sinking=3,
-	died
-};
-
 public class PP_GameController : MonoBehaviour {
 	
 	public int currentLevel =1;
@@ -19,9 +11,24 @@ public class PP_GameController : MonoBehaviour {
 	private bool bannerAnimationPlayed=false;
 	private bool didUpdateLevel=false;
 
+	public AudioClip jumpSfx,celebSfx,waterSplash;
+	public AudioSource aSource;
 
 	void Start(){
 		PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
+	}
+
+
+	public void playSoundEffect(string _name){
+
+		if(_name=="Jump")
+			aSource.clip = jumpSfx;
+		else if(_name=="Celeb")
+			aSource.clip = celebSfx;
+		else if(_name=="WaterSplash")
+			aSource.clip = waterSplash;
+
+		aSource.Play();
 	}
 
 	public void updateGameLevels(){
@@ -30,6 +37,7 @@ public class PP_GameController : MonoBehaviour {
 			PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
 			levelCount.GetComponent<Text> ().text = currentLevel.ToString ();
 			// when level has been incremented, switch to new level enable
+			playSoundEffect("Celeb");
 			animateTheBannerMessage ("You've done it!", true);
 	}
 
@@ -55,6 +63,7 @@ public class PP_GameController : MonoBehaviour {
 		}
 
 	void switchToNextLevelAfterSomePause(){
+	
 		bannerAnimationPlayed = true;
 		CancelInvoke("panCameraToNextLevel");
 		Invoke("panCameraToNextLevel",0.5f);

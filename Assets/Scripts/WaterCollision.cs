@@ -5,17 +5,14 @@ public class WaterCollision : MonoBehaviour {
 
 
 	public GameObject waterSplash;
-	public AudioClip waterSplashSfx;
-	public AudioSource aSource;
+	private PP_GameController gameCtrl;
 
 	void OnTriggerEnter(Collider collidedObj){
 
 		if (collidedObj.gameObject.name == "Player")
 		{
-
-			//play water splash sound
-			aSource.clip = waterSplashSfx;
-			aSource.Play();
+			gameCtrl = Camera.main.GetComponent<PP_GameController>();
+			gameCtrl.playSoundEffect("WaterSplash");
 
 			// instantiate a particle system of water splash
 			Vector3 waterSplashPos = new Vector3(collidedObj.transform.position.x,transform.position.y+0.3f,collidedObj.transform.position.z);
