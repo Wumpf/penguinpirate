@@ -10,10 +10,34 @@ class PlayerMovementController : MonoBehaviour
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
     public static float TAP_DURATION = 0.15f;
 
-    public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+    public float MaxSpeed;
 
-    private Helpers.HermiteSpline currentMovement;
-    private Helpers.HermiteSpline hintMovement;
+    public float SpeedFactor;
+
+    public Vector3 Position 
+    { 
+        get 
+        { 
+            return transform.parent != null ? transform.parent.position : transform.position; 
+        }
+    }
+
+    IceFloe _currentFloe = null;
+    public IceFloe currentFloe
+    {
+        get { return _currentFloe; }
+        set
+        {
+            if(_currentFloe != null)
+                _currentFloe.OnCollision -= ResetPath;
+            _currentFloe = value;
+            if (_currentFloe != null)
+                _currentFloe.OnCollision += ResetPath;
+        }
+    }
+
+    private Helpers.HermiteSpline path;
+    private Helpers.HermiteSpline hintPath;
 
     public GameObject dot;
     private GameObject[] hintSplineDots;
@@ -41,64 +65,72 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
 
+    private void ResetPath(Collision col)
+    {
+        Debug.Log("reset Path");
+        path = null;
+    }
+
     private void UpdateCurrentMovement()
     {
         Vector3 startPosition = Position;
-        Vector3 startMovement = transform.forward;
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
+
+        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
+        if (startMovement.magnitude < 1F)
+        {
+            startMovement = (targetPosition - startPosition).normalized;
+            if (transform.parent != null && transform.parent.GetComponent<Rigidbody>())
+                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
+        }
         Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
-        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
+        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
         {
-            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
-        }
-        else
-        {
-            currentMovement = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
         }
     }
 
-    float t = 0;
-
-    void Update()
-    {
-    }
-    
-    
     void FixedUpdate()
     {
-        if(transform.parent != null)
-        {
-            Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-            if (iceFloe == null)
-            {
-                return;
-            }
+        if (transform.parent == null || path == null)
+            return;
 
-            float currentT;
-            if(currentMovement != null)
-            {
-                currentMovement.GetNearestPosition(Position, out currentT);
-                iceFloe.AddForce(currentMovement.DirectionAt(currentT));
-            }
-        }
+        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
+        if (iceFloe == null)
+            return;
+
+        float currentT;
+        path.GetNearestPosition(Position, out currentT);
+
+        Vector3 movement;
+        movement = path.MovementAt(currentT);
+        movement *= Time.fixedDeltaTime / path.Length;
+        movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
+        movement *= SpeedFactor;
+        movement.y = 0F;
+        if (movement.sqrMagnitude > MaxSpeed)
+            movement = movement.normalized * MaxSpeed;
+
+
+        iceFloe.velocity = movement;
     }
 
     public void ChangeHint(Vector3 start, Vector3 direction)
     {
-        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start, direction);
+        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start, direction);
         ShowHint();
     }
 
     public void ChangeHint(Vector3 start)
     {
-        hintMovement = new Helpers.HermiteSpline(Position, currentMovement.EvaluateAt(relativeTime), start);
+        hintPath = new Helpers.HermiteSpline(Position, path.EvaluateAt(relativeTime), start);
         ShowHint();     
     }
 
     public void ResetHint()
     {
-        hintMovement = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
+        hintPath = null; // new Helpers.HermiteSpline(transform.position, currentMovement.EvaluateAt(relativeTime), start);
         foreach (GameObject hintDot in hintSplineDots)
             hintDot.SetActive(false);
 
@@ -107,35 +139,34 @@ class PlayerMovementController : MonoBehaviour
 
     public void ShowHint()
     {
-        if (hintMovement == null)
+        if (hintPath == null)
             return;
 
         for (int i = 0; i < hintSplineDots.Length; ++i)
         {
-            hintSplineDots[i].transform.position = hintMovement.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
+            hintSplineDots[i].transform.position = hintPath.EvaluateAt((float)(i + 1) / hintSplineDots.Length);
             hintSplineDots[i].SetActive(true);
         }
     }
 
     void OnDrawGizmos()
     {
-        if (currentMovement != null)
+        if (path != null)
         {
-            Gizmos.DrawLine(currentMovement.StartPosition, currentMovement.StartPosition + Vector3.up * 2F);
-            Gizmos.DrawLine(currentMovement.FinalPosition, currentMovement.FinalPosition + Vector3.up * 2F);
+            Gizmos.DrawLine(path.GetNearestPosition(Position), path.GetNearestPosition(Position) + Vector3.up * 2F);
         }
-        DrawCurrentMovement();
+        DrawPath();
     }
 
-    void DrawCurrentMovement()
+    void DrawPath()
     {
         Gizmos.color = Color.white;
-        if (currentMovement != null)
+        if (path != null)
         {
             float stepSize = 0.05F;
             for (float t = 0F; t <= 1F; t += stepSize)
             {
-                Gizmos.DrawSphere(currentMovement.EvaluateAt(t), 0.1F);
+                Gizmos.DrawSphere(path.EvaluateAt(t), 0.1F);
             }
         }
 

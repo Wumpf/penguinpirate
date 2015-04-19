@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3357014}
   - 23: {fileID: 2350482}
   - 111: {fileID: 11156866}
+  - 136: {fileID: 13642352}
   m_Layer: 0
   m_Name: Boat
   m_TagString: Untagged
@@ -24,9 +25,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 194532}
-  m_LocalRotation: {x: -.5, y: .5, z: .500000119, w: .49999994}
-  m_LocalPosition: {x: -6.76000023, y: .180000007, z: -6.13000011}
-  m_LocalScale: {x: .374669015, y: .374669433, z: .374669433}
+  m_LocalRotation: {x: -.571134508, y: .428555578, z: .507340372, w: .482443124}
+  m_LocalPosition: {x: -.654999971, y: .296999991, z: .754999995}
+  m_LocalScale: {x: .0374668948, y: .0374669395, z: .0374669358}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,6 +76,19 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!136 &13642352
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194532}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.12606335
+  m_Height: 14.8445272
+  m_Direction: 1
+  m_Center: {x: .553521693, y: 1.13743329, z: -.106783107}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

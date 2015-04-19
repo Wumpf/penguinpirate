@@ -4,18 +4,19 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-	private const float JUMP_DURATION = 2.0f;
-	private const float JUMP_TAP_DURATION = 0.15f;
-	private const float JUMP_HEIGHT = 5.0f;
-	private const float JUMP_MAX_DISTANCE = 5.0f;
+    public const float JUMP_DURATION = 2.0f;
+    public const float JUMP_TAP_DURATION = 0.15f;
+    public const float JUMP_HEIGHT = 5.0f;
+    public const float JUMP_MAX_DISTANCE = 5.0f;
+
+	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	// If the player position is below, this height, it will be reset to its start position.
-	private const float SUNK_HEIGHT = -4.0f;
+	private float SUNK_HEIGHT;
 
 	private float lastTapTime = -999999.0f;
 
 	private Vector3 startPosition;
-	private IceFloe startFloe;
 	
 
 	public TouchInput TouchInput;
@@ -32,30 +33,39 @@ public class Player : MonoBehaviour
 		private set;
 	}
 
+	/// <summary>
+	/// Current jump status. 0 just started, 1 done.
+	/// </summary>
+	public float JumpTimer
+	{
+		get;
+		private set;
+	}
+
 	// Use this for initialization
 	void Start()
 	{
-		TouchInput.onTapRelease += JumpTap;
-
 		startPosition = transform.position;
-		if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
-		{
-			startFloe = transform.parent.GetComponent<IceFloe>();
-		}
-		else
-			Debug.LogError("Please attach the player to a starting IceFloe!");
+
+		TouchInput.onTapRelease += JumpTap;
 
 		gameController = GameObject.FindObjectOfType<PP_GameController>();
 		if(gameController == null)
 		{
 			Debug.LogError("Please add a game controller to the scene!");
 		}
+
+        SUNK_HEIGHT = GetComponent<Collider>().bounds.extents.y;
 	}
 
 	public void Reset()
 	{
-		transform.position = startPosition;
-		transform.parent = startFloe.transform;
+        transform.position = Vector3.up * 0.84F;
+
+        GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
+        transform.parent = startFloe.transform;
+
+        GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
 	}
 
 	void JumpTap()
@@ -69,7 +79,7 @@ public class Player : MonoBehaviour
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
 			else
 				Debug.Log("Too far away.");
-		}	
+		}
 	}
 
 	// Update is called once per frame
@@ -79,9 +89,10 @@ public class Player : MonoBehaviour
 
 	IEnumerator Jump(Vector3 destination)
 	{
-		transform.parent = null; // Detach from IceFloe
+        transform.parent = null; // Detach from IceFloe
+        GetComponent<PlayerMovementController>().currentFloe = null;
 
-		float jumpTimer = 0.0f;
+		JumpTimer = 0.0f;
 
 		// Compute jump spline
 		List<Vector3> points = new List<Vector3>();
@@ -100,9 +111,9 @@ public class Player : MonoBehaviour
 
 		while (transform.parent == null) // Not yet reattached to an icefloe
 		{
-			transform.position = bezierPath.CalculateBezierPoint(0, jumpTimer);
+			transform.position = bezierPath.CalculateBezierPoint(0, JumpTimer);
 			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
-			jumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
+			JumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 
 			if (transform.position.y < SUNK_HEIGHT)
 			{
@@ -114,5 +125,26 @@ public class Player : MonoBehaviour
 			yield return new WaitForFixedUpdate();
 		}
 		yield return null;
+	}
+
+	void OnCollisionEnter(Collision col)
+	{
+		IceFloe iceFloe = col.gameObject.GetComponent<IceFloe>();
+		if (iceFloe != null && iceFloe != transform.parent && JumpTimer > 0.5f)
+		{
+			Quaternion rotation = transform.rotation;
+			transform.parent = iceFloe.transform;
+			transform.rotation = rotation;
+			iceFloe.GetComponent<Rigidbody>().AddForce(LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
+
+            GetComponent<PlayerMovementController>().currentFloe = iceFloe;
+		}
+
+		else if(col.gameObject.tag == "Goal")
+		{
+			StopCoroutine("Jump");
+			gameController.updateGameLevels();
+			return;
+		}
 	}
 }

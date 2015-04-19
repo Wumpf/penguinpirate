@@ -5,18 +5,32 @@ using System.Linq;
 public class IceFloe : MonoBehaviour
 {
 	private const float SINK_MOVEMENT = 0.05f;
-	private const float SUNK_HEIGHT = -1.56f;
-
-	private const float JUMP_FORCE_FACTOR = 1.0f;
+	private const float SUNK_HEIGHT = 0f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
+	private float startUpperBound;
 
-	// Use this for initialization
+	private UIControl UIScript;
+
+    public delegate void EventHandler(Collision col);
+    public event EventHandler OnCollision;
+
+	private Collider collider;
+
+	void Start()
+	{
+		collider = GetComponent<Collider>();
+		startUpperBound = collider.bounds.max.y;
+	}
+
+    // Use this for initialization
 	void OnEnable()
 	{
 		startPosition = transform.position;
 		startOrientation = transform.rotation;
+
+		UIScript = GameObject.Find("UI_Control").GetComponent<UIControl>();
 	}
 
 	/// <summary>
@@ -26,6 +40,9 @@ public class IceFloe : MonoBehaviour
 	{
 		transform.position = startPosition;
 		transform.rotation = startOrientation;
+
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().rotation = Quaternion.identity;
 	}
 
 	// Update is called once per frame
@@ -35,8 +52,11 @@ public class IceFloe : MonoBehaviour
 		if (transform.GetComponentsInChildren(typeof(Transform)).Any(x => x.tag == "Player"))
 		{
 			transform.Translate(0, -SINK_MOVEMENT * Time.deltaTime, 0);
+			
+			float currentUpperBound = collider.bounds.max.y;
+			UIScript.iceFloeTTL = ((SUNK_HEIGHT - currentUpperBound) / (SUNK_HEIGHT - startUpperBound)) * 100;
 
-			if (transform.position.y < SUNK_HEIGHT)
+			if (currentUpperBound < SUNK_HEIGHT)
 			{
 				Debug.Log("icefloe with player has sunk. You lost.");
 				GameObject.FindObjectOfType<PP_GameController>().gameEndStatus();
@@ -46,16 +66,12 @@ public class IceFloe : MonoBehaviour
 		// TODO add some buoyancy animation :)
 	}
 
-
-	void OnCollisionEnter(Collision col)
-	{
-		Player player = col.gameObject.GetComponent<Player>();
-		if (player != null && col.gameObject != transform.parent)
-		{
-			Quaternion rotation = col.gameObject.transform.rotation;
-			col.gameObject.transform.parent = transform;
-			col.gameObject.transform.rotation = rotation;
-			this.GetComponent<Rigidbody>().AddForce(player.LastJumpDirectionWorld * JUMP_FORCE_FACTOR);
-		}
-	}
+    void OnCollisionEnter(Collision col)
+    {
+        
+        if(OnCollision != null)
+        {
+            OnCollision.Invoke(col);
+        }
+    }
 }

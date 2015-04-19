@@ -16,4 +16,9 @@ public class MenuController : MonoBehaviour {
 	public void playGame() {
 		Application.LoadLevel("PenguinPirate");
 	}
+
+	public void quitGame() {
+		Debug.Log("Quit");
+		Application.Quit();
+	}
 }
