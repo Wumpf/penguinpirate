@@ -70,7 +70,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 182630}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 4
   m_Drag: 0
   m_AngularDrag: .0500000007
   m_UseGravity: 0
@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f43864de8178804409f7f95b6ac18919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SINKING_SPEED: .0500000007
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
