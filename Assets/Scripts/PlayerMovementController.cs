@@ -6,9 +6,9 @@ class PlayerMovementController : MonoBehaviour
 {
     public TouchInput touchInput;
 
-    public static float SECONDS_PER_SPLINE = 10;
-    public static float MIN_DIRECTION_SIZE_PIXELS = 10;
     public static float TAP_DURATION = 0.15f;
+
+    public float MIN_START_SPEED;
 
     public float MaxSpeed;
 
@@ -61,8 +61,6 @@ class PlayerMovementController : MonoBehaviour
         touching = false;
 
         hintSplineDots = new GameObject[10];
-		if (dot == null)
-			return;
         for (int i = 0; i < hintSplineDots.Length; ++i)
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
@@ -75,23 +73,23 @@ class PlayerMovementController : MonoBehaviour
 
     private void UpdateCurrentMovement()
     {
-		if (transform.parent == null)
-			return;
-
         Vector3 startPosition = Position;
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
 
-			Vector3 startMovement = transform.parent.GetComponent<Rigidbody> ().velocity;
-			if (startMovement.magnitude < 1F) {
-				startMovement = (targetPosition - startPosition).normalized;
-				if (transform.parent != null && transform.parent.GetComponent<Rigidbody> ())
-					transform.parent.GetComponent<Rigidbody> ().velocity = startMovement;
-			}
-			Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+        Vector3 startMovement = currentFloe != null ? currentFloe.GetComponent<Rigidbody>().velocity : (targetPosition - startPosition).normalized;
+        if (startMovement.magnitude < MIN_START_SPEED)
+        {
+            startMovement.Normalize();
+            startMovement *= MIN_START_SPEED;
+            if (currentFloe != null)
+                currentFloe.GetComponent<Rigidbody>().velocity = startMovement;
+        }
+        Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
-			if (touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION) {
-				path = new Helpers.HermiteSpline (startPosition, startMovement, targetPosition, targetMovement);
-			}
+        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
+        {
+            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+        }
     }
 
     void FixedUpdate()
@@ -99,8 +97,8 @@ class PlayerMovementController : MonoBehaviour
         if (transform.parent == null || path == null)
             return;
 
-        Rigidbody iceFloe = transform.parent.GetComponent<Rigidbody>();
-        if (iceFloe == null)
+        Rigidbody iceFloeRB = transform.parent.GetComponent<Rigidbody>();
+        if (iceFloeRB == null)
             return;
 
         float currentT;
@@ -109,14 +107,12 @@ class PlayerMovementController : MonoBehaviour
         Vector3 movement;
         movement = path.MovementAt(currentT);
         movement *= Time.fixedDeltaTime / path.Length;
-        movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
         movement *= SpeedFactor;
         movement.y = 0F;
-        if (movement.sqrMagnitude > MaxSpeed)
+        if (movement.sqrMagnitude > MaxSpeed * MaxSpeed)
             movement = movement.normalized * MaxSpeed;
 
-
-        iceFloe.velocity = movement;
+        iceFloeRB.velocity = movement;
     }
 
     public void ChangeHint(Vector3 start, Vector3 direction)
