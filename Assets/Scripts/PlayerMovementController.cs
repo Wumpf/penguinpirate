@@ -22,6 +22,20 @@ class PlayerMovementController : MonoBehaviour
         }
     }
 
+    IceFloe _currentFloe = null;
+    public IceFloe currentFloe
+    {
+        get { return _currentFloe; }
+        set
+        {
+            if(_currentFloe != null)
+                _currentFloe.OnCollision -= ResetPath;
+            _currentFloe = value;
+            if (_currentFloe != null)
+                _currentFloe.OnCollision += ResetPath;
+        }
+    }
+
     private Helpers.HermiteSpline path;
     private Helpers.HermiteSpline hintPath;
 
@@ -51,6 +65,12 @@ class PlayerMovementController : MonoBehaviour
             hintSplineDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
     }
 
+    private void ResetPath(Collision col)
+    {
+        Debug.Log("reset Path");
+        path = null;
+    }
+
     private void UpdateCurrentMovement()
     {
         Vector3 startPosition = Position;
@@ -73,6 +93,7 @@ class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(currentFloe);
     }
 
     void FixedUpdate()
@@ -137,14 +158,12 @@ class PlayerMovementController : MonoBehaviour
     {
         if (path != null)
         {
-            Gizmos.DrawLine(path.StartPosition, path.StartPosition + Vector3.up * 2F);
-            Gizmos.DrawLine(path.FinalPosition, path.FinalPosition + Vector3.up * 2F);
             Gizmos.DrawLine(path.GetNearestPosition(Position), path.GetNearestPosition(Position) + Vector3.up * 2F);
         }
-        DrawCurrentMovement();
+        DrawPath();
     }
 
-    void DrawCurrentMovement()
+    void DrawPath()
     {
         Gizmos.color = Color.white;
         if (path != null)

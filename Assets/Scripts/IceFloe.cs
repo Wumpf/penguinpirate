@@ -59,7 +59,10 @@ public class IceFloe : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
+        
         if(OnCollision != null)
+        {
             OnCollision.Invoke(col);
+        }
     }
 }
