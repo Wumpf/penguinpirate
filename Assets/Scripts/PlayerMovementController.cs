@@ -91,11 +91,6 @@ class PlayerMovementController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        Debug.Log(currentFloe);
-    }
-
     void FixedUpdate()
     {
         if (transform.parent == null || path == null)
