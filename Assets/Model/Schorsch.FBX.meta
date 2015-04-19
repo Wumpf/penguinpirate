@@ -1,0 +1,136 @@
+fileFormatVersion: 2
+guid: bf5c13cd6fa1ecb4b9311b29f692e889
+timeCreated: 1429447347
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Acagamics Figur001
+    100002: Acagamics Figur002
+    100004: Acagamics Figur003
+    100006: Band001
+    100008: Band002
+    100010: Band003
+    100012: Band004
+    100014: Band005
+    100016: Band006
+    100018: Cylinder002
+    100020: Cylinder003
+    100022: Cylinder004
+    100024: Dangle dangle001
+    100026: Dangle dangle002
+    100028: Dangle dangle003
+    100030: Figur001
+    100032: Figur002
+    100034: Figur003
+    100036: Hat001
+    100038: Hat002
+    100040: Hat003
+    100042: Hat004
+    100044: Hat005
+    100046: Hat006
+    100048: //RootNode
+    100050: Sphere002
+    100052: Sphere003
+    100054: Sphere004
+    400000: Acagamics Figur001
+    400002: Acagamics Figur002
+    400004: Acagamics Figur003
+    400006: Band001
+    400008: Band002
+    400010: Band003
+    400012: Band004
+    400014: Band005
+    400016: Band006
+    400018: Cylinder002
+    400020: Cylinder003
+    400022: Cylinder004
+    400024: Dangle dangle001
+    400026: Dangle dangle002
+    400028: Dangle dangle003
+    400030: Figur001
+    400032: Figur002
+    400034: Figur003
+    400036: Hat001
+    400038: Hat002
+    400040: Hat003
+    400042: Hat004
+    400044: Hat005
+    400046: Hat006
+    400048: //RootNode
+    400050: Sphere002
+    400052: Sphere003
+    400054: Sphere004
+    2300000: Band002
+    2300002: Cylinder002
+    2300004: Cylinder004
+    2300006: Dangle dangle001
+    2300008: Figur002
+    3300000: Band002
+    3300002: Cylinder002
+    3300004: Cylinder004
+    3300006: Dangle dangle001
+    3300008: Figur002
+    4300000: Dangle dangle001
+    4300002: Band002
+    4300004: Cylinder002
+    4300006: Figur002
+    4300008: Cylinder004
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
