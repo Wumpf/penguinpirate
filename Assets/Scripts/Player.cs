@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
 
 	public void Reset()
 	{
+        // TODO: somehow Player does not reset its Position....
 		transform.position = startPosition;
 		transform.parent = startFloe.transform;
 	}

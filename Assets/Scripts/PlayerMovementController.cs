@@ -84,15 +84,13 @@ class PlayerMovementController : MonoBehaviour
         if (iceFloe == null)
             return;
 
-        Debug.Log("velocity " + iceFloe.velocity.magnitude);
-
         float currentT;
         path.GetNearestPosition(Position, out currentT);
 
         Vector3 movement;
         movement = path.MovementAt(currentT);
         movement *= Time.fixedDeltaTime / path.Length;
-        movement *= Mathf.Sqrt(Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT));
+        movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
         movement *= SpeedFactor;
         movement.y = 0F;
         if (movement.sqrMagnitude > MaxSpeed)
