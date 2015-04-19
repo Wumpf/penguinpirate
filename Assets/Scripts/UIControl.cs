@@ -16,7 +16,11 @@ public class UIControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		iceFloeTTLImage.GetComponent<Image>().fillAmount = iceFloeTTL/100;
+		float iceFloePrcnt = iceFloeTTL/100;
+		Image iceFloeImage = iceFloeTTLImage.GetComponent<Image>();
+
+		iceFloeImage.color = Color.Lerp(new Color(0.59f, 0.13f, 0.07f), new Color(0.27f, 0.38f, 0.48f), iceFloePrcnt);
+		iceFloeImage.fillAmount = iceFloePrcnt;
 	}
 
 	public void switchToMenu() {
