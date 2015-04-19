@@ -124,7 +124,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -550,12 +550,12 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 220435684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.66000009, y: .400000006, z: 10.7600002}
+  m_LocalPosition: {x: 2.75999999, y: .400000006, z: 12.3600006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 132225244}
-  m_Father: {fileID: 2081695592}
-  m_RootOrder: 4
+  m_Father: {fileID: 583925156}
+  m_RootOrder: 12
 --- !u!95 &220435686
 Animator:
   serializedVersion: 3
@@ -664,7 +664,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -1333,6 +1333,9 @@ Transform:
   - {fileID: 350116906}
   - {fileID: 35578792}
   - {fileID: 694987211}
+  - {fileID: 220435685}
+  - {fileID: 2057373089}
+  - {fileID: 1437106832}
   m_Father: {fileID: 2081695592}
   m_RootOrder: 3
 --- !u!4 &595824214 stripped
@@ -1867,7 +1870,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -3312,7 +3315,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -3594,7 +3597,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1437106831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.66000009, y: .400000006, z: 10.7600002}
+  m_LocalPosition: {x: 2.75999999, y: .400000006, z: 12.3600006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1450161863}
@@ -3604,8 +3607,8 @@ Transform:
   - {fileID: 1322237236}
   - {fileID: 1608156825}
   - {fileID: 1509620150}
-  m_Father: {fileID: 2081695592}
-  m_RootOrder: 6
+  m_Father: {fileID: 583925156}
+  m_RootOrder: 14
 --- !u!95 &1437106833
 Animator:
   serializedVersion: 3
@@ -3990,7 +3993,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -5340,7 +5343,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
@@ -5661,12 +5664,12 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2057373088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.73000002, y: .400000006, z: 9.89000034}
+  m_LocalPosition: {x: -3.63000011, y: .400000006, z: 11.4900007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1746913573}
-  m_Father: {fileID: 2081695592}
-  m_RootOrder: 5
+  m_Father: {fileID: 583925156}
+  m_RootOrder: 13
 --- !u!95 &2057373090
 Animator:
   serializedVersion: 3
@@ -5746,9 +5749,6 @@ Transform:
   - {fileID: 634537339}
   - {fileID: 1715093973}
   - {fileID: 583925156}
-  - {fileID: 220435685}
-  - {fileID: 2057373089}
-  - {fileID: 1437106832}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1001 &2135576812
@@ -5788,7 +5788,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalScale.x
