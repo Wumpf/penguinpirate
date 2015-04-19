@@ -13,28 +13,30 @@ public enum PlayerStates{
 public class PP_GameController : MonoBehaviour {
 	
 	public int currentLevel =1;
-	//public int score=0;
 	public GameObject bannerObj;
-	//public GameObject scoreCount;
 	public GameObject levelCount;
+	public GameObject allLevels;
 	private bool bannerAnimationPlayed=false;
+	private bool didUpdateLevel=false;
 
 	public void updateGameLevels(){
 		// increment game level when player has reached ISLAND
-
-		// when level has been incremented, switch to new level enable
-		currentLevel++;
-		levelCount.GetComponent<Text>().text = currentLevel.ToString();
+			currentLevel++;
+			levelCount.GetComponent<Text> ().text = currentLevel.ToString ();
+			// when level has been incremented, switch to new level enable
+			animateTheBannerMessage ("You've done it!", true);
 	}
 
-	public void gameCompletedStatus(){
-		// check if the game has completed and what are the scores to be shown on HUD
-		animateTheBannerMessage ("You've done it!");
-	}
-
-	void animateTheBannerMessage(string msg){
+	void animateTheBannerMessage(string msg,bool isLevelCompleted){
+		string methodName;
 		if (bannerAnimationPlayed == true)
 			return;
+
+		if (!isLevelCompleted) {
+			methodName="restartGameAfterSomePause";
+		}
+		else 
+			methodName="switchToNextLevelAfterSomePause";
 
 		bannerObj.SetActive (true);
 		bannerObj.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
@@ -43,8 +45,35 @@ public class PP_GameController : MonoBehaviour {
 		//scale up the banner with sfx
 		iTween.ScaleTo (bannerObj,iTween.Hash("scale",new Vector3(1.0f,1.0f,1.0f),"time",0.75f,
 		                                      "oncompletetarget",gameObject,"oncomplete",
-		                                      "restartGameAfterSomePause","easetype",iTween.EaseType.easeInOutSine));
+		                                      methodName,"easetype",iTween.EaseType.easeInOutSine));
 		}
+
+	void switchToNextLevelAfterSomePause(){
+		bannerAnimationPlayed = true;
+		CancelInvoke("panCameraToNextLevel");
+		Invoke("panCameraToNextLevel",0.5f);
+	}
+	
+	void panCameraToNextLevel(){
+		//disable the banner
+		if(bannerObj != null && bannerObj.activeSelf == true) {
+			bannerObj.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
+			bannerObj.SetActive (false);
+		}
+
+		GameObject currentLevelObj = allLevels.transform.FindChild(currentLevel.ToString()).gameObject;
+		currentLevelObj.SetActive (true);
+
+		GameObject prevLevelObj = allLevels.transform.FindChild((currentLevel-1).ToString()).gameObject;
+		prevLevelObj.SetActive (false);
+
+		//animate camera to the new Level Position, pan to right position only
+		iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
+		                                                  Camera.main.transform.position.z),1.0f);
+
+		bannerAnimationPlayed = false;
+	}
+
 
 	void restartGameAfterSomePause(){
 		bannerAnimationPlayed = true;
@@ -69,11 +98,11 @@ public class PP_GameController : MonoBehaviour {
 			iceFloe.Reset(); 
 
 		bannerAnimationPlayed = false;
+		didUpdateLevel =false;
 		}
 
 	public void gameEndStatus(){ 	
-		animateTheBannerMessage("You've lost it!");
-
+		animateTheBannerMessage("You've lost it!",false);
 	}
 
 //	public void updatePlayerScore(){ //no score required for this game

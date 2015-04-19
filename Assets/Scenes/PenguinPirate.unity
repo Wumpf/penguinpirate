@@ -2670,7 +2670,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 5.87524271
+  m_Radius: 7.38999987
   m_Height: 21.1774902
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -2916,7 +2916,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1123703698}
   m_LocalRotation: {x: .258819073, y: 0, z: 0, w: .965925813}
-  m_LocalPosition: {x: -3, y: 16.6900005, z: -29.4400005}
+  m_LocalPosition: {x: 0, y: 16.6900005, z: -29.4400005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2943,6 +2943,7 @@ MonoBehaviour:
   currentLevel: 1
   bannerObj: {fileID: 1895765750}
   levelCount: {fileID: 191859865}
+  allLevels: {fileID: 2081695591}
 --- !u!1 &1133451700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3226,7 +3227,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -12.6999998
+      value: 1.29999995
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3234,7 +3235,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -9.30000019
+      value: 17.2000008
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3382,7 +3383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1364732539
 Transform:
   m_ObjectHideFlags: 0
@@ -3419,6 +3420,7 @@ MonoBehaviour:
   currentLevel: 1
   bannerObj: {fileID: 0}
   levelCount: {fileID: 0}
+  allLevels: {fileID: 0}
 --- !u!1 &1383348499
 GameObject:
   m_ObjectHideFlags: 0
@@ -4548,6 +4550,7 @@ MonoBehaviour:
   currentLevel: 1
   bannerObj: {fileID: 0}
   levelCount: {fileID: 0}
+  allLevels: {fileID: 0}
 --- !u!1001 &1745564426
 Prefab:
   m_ObjectHideFlags: 0

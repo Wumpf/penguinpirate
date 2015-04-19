@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
 		{
 			StopCoroutine("Jump");
 			gameController.updateGameLevels();
-
+			return;
 		}
 	}
 }
