@@ -7,12 +7,10 @@ public class Player : MonoBehaviour
     public const float JUMP_DURATION = 2.0f;
     public const float JUMP_TAP_DURATION = 0.15f;
     public const float JUMP_HEIGHT = 5.0f;
-    public const float JUMP_MAX_DISTANCE = 5.0f;
+    public const float JUMP_MAX_DISTANCE = 9.0f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
-	// If the player position is below, this height, it will be reset to its start position.
-	private float SUNK_HEIGHT;
 
 	private float lastTapTime = -999999.0f;
 
@@ -54,16 +52,14 @@ public class Player : MonoBehaviour
 		{
 			Debug.LogError("Please add a game controller to the scene!");
 		}
-
-        SUNK_HEIGHT = GetComponent<Collider>().bounds.extents.y;
 	}
 
 	public void Reset()
 	{
+		GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
         transform.position = Vector3.up * 0.84F;
-
-        GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
         transform.parent = startFloe.transform;
+		startFloe.transform.position = Vector3.zero;
 
         GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
 	}
@@ -115,7 +111,7 @@ public class Player : MonoBehaviour
 			transform.forward = Vector3.Slerp(-LastJumpDirectionWorld, transform.forward, Mathf.Exp(-Time.time * 0.1f));
 			JumpTimer += Time.fixedDeltaTime / JUMP_DURATION;
 
-			if (transform.position.y < SUNK_HEIGHT)
+			if (GetComponent<Collider>().bounds.max.y < IceFloe.SUNK_HEIGHT)
 			{
 				Debug.Log("Player has jumped into the water. You lost.");
 				gameController.gameEndStatus();
