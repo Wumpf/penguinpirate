@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
 	// If the player position is below, this height, it will be reset to its start position.
-	private const float SUNK_HEIGHT = -7.0f;
+	private float SUNK_HEIGHT;
 
 	private float lastTapTime = -999999.0f;
 
@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		startPosition = transform.position;
-		// Start floe is initialized later...
 
 		TouchInput.onTapRelease += JumpTap;
 
@@ -55,6 +54,8 @@ public class Player : MonoBehaviour
 		{
 			Debug.LogError("Please add a game controller to the scene!");
 		}
+
+        SUNK_HEIGHT = GetComponent<Collider>().bounds.extents.y;
 	}
 
 	public void Reset()
