@@ -31,7 +31,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &121784
 GameObject:
   m_ObjectHideFlags: 1
@@ -628,7 +628,7 @@ MonoBehaviour:
   touchInput: {fileID: 11451468}
   MIN_START_SPEED: 1
   MaxSpeed: 8
-  SpeedFactor: 120
+  SpeedFactor: 60
   dot: {fileID: 113298}
 --- !u!114 &11496174
 MonoBehaviour:
