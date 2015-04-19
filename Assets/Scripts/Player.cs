@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
 	private float lastTapTime = -999999.0f;
 
 	private Vector3 startPosition;
-	private IceFloe startFloe;
 	
 
 	public TouchInput TouchInput;
@@ -60,9 +59,11 @@ public class Player : MonoBehaviour
 
 	public void Reset()
 	{
-        // TODO: somehow Player does not reset its Position....
-		transform.position = startPosition;
+        transform.position = Vector3.up * 0.84F;
+
+        GameObject startFloe = GameObject.FindGameObjectWithTag("StartFloe");
         transform.parent = startFloe.transform;
+
         GetComponent<PlayerMovementController>().currentFloe = startFloe.GetComponent<IceFloe>();
 	}
 
@@ -83,19 +84,6 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// Can't do this in the Start function.
-		// Yes I should just make it a public attribute that needs to be assigned in the editor... but then again something will be broken.
-		// ... so please don't hurt me for this little hack...
-		if (startFloe == null)
-		{
-			if (transform.parent != null && transform.parent.GetComponent<IceFloe>() != null)
-			{
-                startFloe = transform.parent.GetComponent<IceFloe>();
-                GetComponent<PlayerMovementController>().currentFloe = startFloe;
-			}
-			else
-				Debug.LogError("Please attach the player to a starting IceFloe!");
-		}
 	}
 
 	IEnumerator Jump(Vector3 destination)

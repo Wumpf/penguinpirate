@@ -98,6 +98,12 @@ public class PP_GameController : MonoBehaviour {
 		foreach (var player in players)
 			player.Reset();
 
+        CameraController cam = GetComponent<CameraController>();
+        if(cam != null)
+        {
+            cam.Player = players[0].transform;
+        }
+
 		bannerAnimationPlayed = false;
 		didUpdateLevel =false;
 		}
