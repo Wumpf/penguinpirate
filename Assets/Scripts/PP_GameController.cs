@@ -19,9 +19,15 @@ public class PP_GameController : MonoBehaviour {
 	private bool bannerAnimationPlayed=false;
 	private bool didUpdateLevel=false;
 
+
+	void Start(){
+		PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
+	}
+
 	public void updateGameLevels(){
 		// increment game level when player has reached ISLAND
-			currentLevel++;
+			currentLevel = 2;//currentLevel++; HARD CODED
+			PlayerPrefs.SetInt ("CurrentLevel",currentLevel);
 			levelCount.GetComponent<Text> ().text = currentLevel.ToString ();
 			// when level has been incremented, switch to new level enable
 			animateTheBannerMessage ("You've done it!", true);
@@ -65,10 +71,12 @@ public class PP_GameController : MonoBehaviour {
 		resetTheGameState ();
 
 		GameObject currentLevelObj = allLevels.transform.FindChild(currentLevel.ToString()).gameObject;
-		currentLevelObj.SetActive (true);
+		if(currentLevelObj!=null)
+			currentLevelObj.SetActive (true);
 
 		GameObject prevLevelObj = allLevels.transform.FindChild((currentLevel-1).ToString()).gameObject;
-		prevLevelObj.SetActive (false);
+		if(currentLevelObj!=null)
+			prevLevelObj.SetActive (false);
 
 		//animate camera to the new Level Position, pan to right position only
 		/*iTween.MoveTo (Camera.main.gameObject,new Vector3(Camera.main.transform.position.x + 100f,Camera.main.transform.position.y,
@@ -85,6 +93,8 @@ public class PP_GameController : MonoBehaviour {
 		}
 
 	public void resetTheGameState(){
+		currentLevel = PlayerPrefs.GetInt ("CurrentLevel");
+
 		//disable the banner
 		if(bannerObj != null && bannerObj.activeSelf == true) {
 			bannerObj.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);

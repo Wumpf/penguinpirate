@@ -13,7 +13,7 @@ SceneSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 6
+  serializedVersion: 5
   m_Fog: 0
   m_FogColor: {r: .5, g: .5, b: .5, a: 1}
   m_FogMode: 3
@@ -24,6 +24,62 @@ RenderSettings:
   m_AmbientEquatorColor: {r: .114, g: .125, b: .133000001, a: 1}
   m_AmbientGroundColor: {r: .0469999984, g: .0430000015, b: .0350000001, a: 1}
   m_AmbientIntensity: 1
+  m_AmbientProbe:
+    sh[ 0]: .168264732
+    sh[ 1]: -.0164646432
+    sh[ 2]: -.0117204934
+    sh[ 3]: .00676710904
+    sh[ 4]: .00513477111
+    sh[ 5]: -.00889339857
+    sh[ 6]: .00981249753
+    sh[ 7]: -.0104625635
+    sh[ 8]: .0234116819
+    sh[ 9]: .211248428
+    sh[10]: .0272310972
+    sh[11]: -.0194160715
+    sh[12]: .0112109464
+    sh[13]: .00866405852
+    sh[14]: -.0150057431
+    sh[15]: .0142608527
+    sh[16]: -.0159472115
+    sh[17]: .0335921086
+    sh[18]: .290544182
+    sh[19]: .110371545
+    sh[20]: -.0356716812
+    sh[21]: .0205951221
+    sh[22]: .0167628117
+    sh[23]: -.0290335193
+    sh[24]: .0182292107
+    sh[25]: -.0240621697
+    sh[26]: .0408163071
+  m_AmbientProbeInGamma:
+    sh[ 0]: .425810188
+    sh[ 1]: -.0304772779
+    sh[ 2]: -.0154496282
+    sh[ 3]: .00891953893
+    sh[ 4]: .00794115476
+    sh[ 5]: -.0137549601
+    sh[ 6]: .0103238001
+    sh[ 7]: -.00903774425
+    sh[ 8]: .0257591214
+    sh[ 9]: .465763986
+    sh[10]: .0299367476
+    sh[11]: -.0194615424
+    sh[12]: .0112361349
+    sh[13]: .0100590009
+    sh[14]: -.017423097
+    sh[15]: .0121346992
+    sh[16]: -.011005953
+    sh[17]: .0300546512
+    sh[18]: .529367268
+    sh[19]: .117501795
+    sh[20]: -.0258076936
+    sh[21]: .0148993116
+    sh[22]: .0135378176
+    sh[23]: -.0234490521
+    sh[24]: .0126769841
+    sh[25]: -.01345516
+    sh[26]: .0302676931
   m_AmbientMode: 0
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: .5
@@ -36,6 +92,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
+  m_GeneratedSkyboxReflection: {fileID: 0}
   m_Sun: {fileID: 0}
 --- !u!127 &3
 LevelGameManager:
@@ -43,9 +100,11 @@ LevelGameManager:
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 5
+  serializedVersion: 4
   m_GIWorkflowMode: 0
+  m_LightmapsModeLegacy: 1
   m_LightmapsMode: 1
+  m_UseDualLightmapsInForward: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -128,6 +187,52 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &554543797
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.19999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.00899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.09000015
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400030, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c46ae38d43e36452397b38cc37888c41, type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: de3669d1a397f43a9b6f7322f85343de, type: 3}
   m_IsPrefabParent: 0
 --- !u!1001 &723270257
 Prefab:
@@ -262,7 +367,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498458, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5477938, guid: ab3db10b88c5fa74e84712b6b54f612f, type: 2}
       propertyPath: m_UseGravity
@@ -320,7 +425,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 442676, guid: 0671e131107512b40ba15831e47d961f, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 193854, guid: 0671e131107512b40ba15831e47d961f, type: 2}
       propertyPath: m_Name
@@ -388,7 +493,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1 &1869178891
 GameObject:
   m_ObjectHideFlags: 0
