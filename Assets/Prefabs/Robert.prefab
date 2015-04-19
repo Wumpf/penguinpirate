@@ -15,6 +15,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &113298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 444198}
+  - 33: {fileID: 3370756}
+  - 23: {fileID: 2333966}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &121784
 GameObject:
   m_ObjectHideFlags: 1
@@ -394,6 +411,18 @@ Transform:
   - {fileID: 419634}
   m_Father: {fileID: 421990}
   m_RootOrder: 1
+--- !u!4 &444198
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113298}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -1.62920685e-07}
+  m_LocalPosition: {x: -2.81525183, y: .218398601, z: 1.47829437}
+  m_LocalScale: {x: .148234308, y: .148234367, z: .148234367}
+  m_Children: []
+  m_Father: {fileID: 482270}
+  m_RootOrder: 1
 --- !u!4 &447296
 Transform:
   m_ObjectHideFlags: 1
@@ -480,10 +509,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 122896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.2700005, y: 1.03400004, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: .238999993, y: .398000002, z: -.199000001}
+  m_LocalScale: {x: 2.02382302, y: 2.02382231, z: 2.02382231}
   m_Children:
   - {fileID: 453274}
+  - {fileID: 444198}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &490170
@@ -510,6 +540,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 452586}
   m_RootOrder: 0
+--- !u!23 &2333966
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113298}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_ImportantGI: 0
+  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &3370756
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113298}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &5445272
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -568,7 +629,7 @@ MonoBehaviour:
   MIN_START_SPEED: 1
   MaxSpeed: 8
   SpeedFactor: 120
-  dot: {fileID: 0}
+  dot: {fileID: 113298}
 --- !u!114 &11496174
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -590,10 +651,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: .300000012
+  m_Radius: .219999999
   m_Height: .5
   m_Direction: 1
-  m_Center: {x: .0500000007, y: .209999993, z: 0}
+  m_Center: {x: .0500000007, y: .25999999, z: 0}
 --- !u!137 &13760430
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
