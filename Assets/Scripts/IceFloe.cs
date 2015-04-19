@@ -5,16 +5,25 @@ using System.Linq;
 public class IceFloe : MonoBehaviour
 {
 	private const float SINK_MOVEMENT = 0.05f;
-	private const float SUNK_HEIGHT = -1.7f;
+	private const float SUNK_HEIGHT = -1.3f;
 
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
+	private float startUpperBound;
 
 	private UIControl UIScript;
 
     public delegate void EventHandler(Collision col);
     public event EventHandler OnCollision;
-	
+
+	private Collider collider;
+
+	void Start()
+	{
+		collider = GetComponent<Collider>();
+		startUpperBound = collider.bounds.max.y;
+	}
+
     // Use this for initialization
 	void OnEnable()
 	{
@@ -43,11 +52,11 @@ public class IceFloe : MonoBehaviour
 		if (transform.GetComponentsInChildren(typeof(Transform)).Any(x => x.tag == "Player"))
 		{
 			transform.Translate(0, -SINK_MOVEMENT * Time.deltaTime, 0);
+			
+			float currentUpperBound = collider.bounds.max.y;
+			UIScript.iceFloeTTL = ((SUNK_HEIGHT - currentUpperBound) / (SUNK_HEIGHT - startUpperBound)) * 100;
 
-			UIScript.iceFloeTTL = ((SUNK_HEIGHT - transform.position.y) / (SUNK_HEIGHT - startPosition.y)) * 100;
-
-
-			if (transform.position.y < SUNK_HEIGHT)
+			if (currentUpperBound < SUNK_HEIGHT)
 			{
 				Debug.Log("icefloe with player has sunk. You lost.");
 				GameObject.FindObjectOfType<PP_GameController>().gameEndStatus();
