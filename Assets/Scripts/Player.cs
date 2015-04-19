@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-	private const float JUMP_DURATION = 2.0f;
-	private const float JUMP_TAP_DURATION = 0.15f;
-	private const float JUMP_HEIGHT = 5.0f;
-	private const float JUMP_MAX_DISTANCE = 5.0f;
+    public const float JUMP_DURATION = 2.0f;
+    public const float JUMP_TAP_DURATION = 0.15f;
+    public const float JUMP_HEIGHT = 5.0f;
+    public const float JUMP_MAX_DISTANCE = 5.0f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 

@@ -280,12 +280,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170540}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e95946b1fc2cde2438d06031dffdaba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   touchInput: {fileID: 11486224}
+  MaxSpeed: 0
+  SpeedFactor: 50
   dot: {fileID: 0}
 --- !u!114 &11486224
 MonoBehaviour:

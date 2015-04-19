@@ -10,7 +10,17 @@ class PlayerMovementController : MonoBehaviour
     public static float MIN_DIRECTION_SIZE_PIXELS = 10;
     public static float TAP_DURATION = 0.15f;
 
-    public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+    public float MaxSpeed;
+
+    public float SpeedFactor;
+
+    public Vector3 Position 
+    { 
+        get 
+        { 
+            return transform.parent != null ? transform.parent.position : transform.position; 
+        }
+    }
 
     private Helpers.HermiteSpline path;
     private Helpers.HermiteSpline hintPath;
@@ -44,16 +54,18 @@ class PlayerMovementController : MonoBehaviour
     private void UpdateCurrentMovement()
     {
         Vector3 startPosition = Position;
-        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
-        Debug.Log(startMovement);
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
+
+        Vector3 startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
+        if (startMovement.magnitude < 1F)
+        {
+            startMovement = (targetPosition - startPosition).normalized;
+            if (transform.parent != null && transform.parent.GetComponent<Rigidbody>())
+                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
+        }
         Vector3 targetMovement = touchInput.lastTapReleasePosition.groundPosition - touchInput.lastTapStartPosition.groundPosition;
 
-        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime < TAP_DURATION)
-        {
-            path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition);
-        }
-        else
+        if(touchInput.lastTapReleaseTime - touchInput.lastTapStartTime > Player.JUMP_TAP_DURATION)
         {
             path = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
         }
@@ -72,6 +84,7 @@ class PlayerMovementController : MonoBehaviour
         if (iceFloe == null)
             return;
 
+        Debug.Log("velocity " + iceFloe.velocity.magnitude);
 
         float currentT;
         path.GetNearestPosition(Position, out currentT);
@@ -80,9 +93,10 @@ class PlayerMovementController : MonoBehaviour
         movement = path.MovementAt(currentT);
         movement *= Time.fixedDeltaTime / path.Length;
         movement *= Mathf.Lerp(path.StartMovement.magnitude, path.FinalMovement.magnitude, currentT);
+        movement *= SpeedFactor;
+        movement.y = 0F;
 
         iceFloe.velocity = movement;
-
     }
 
     public void ChangeHint(Vector3 start, Vector3 direction)

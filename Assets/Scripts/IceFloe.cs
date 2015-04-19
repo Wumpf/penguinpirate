@@ -7,7 +7,6 @@ public class IceFloe : MonoBehaviour
 	private const float SINK_MOVEMENT = 0.05f;
 	private const float SUNK_HEIGHT = -1.7f;
 
-
 	private Vector3 startPosition;
 	private Quaternion startOrientation;
 
@@ -29,6 +28,9 @@ public class IceFloe : MonoBehaviour
 	{
 		transform.position = startPosition;
 		transform.rotation = startOrientation;
+
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().rotation = Quaternion.identity;
 	}
 
 	// Update is called once per frame
