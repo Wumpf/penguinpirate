@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-    public const float JUMP_DURATION = 2.0f;
+    public const float JUMP_DURATION = 1.5f;
     public const float JUMP_TAP_DURATION = 0.15f;
     public const float JUMP_HEIGHT = 5.0f;
-    public const float JUMP_MAX_DISTANCE = 9.0f;
+    public const float JUMP_MAX_DISTANCE = 7.0f;
 
 	private const float JUMP_FORCE_FACTOR = 1.0f;
 
@@ -73,8 +73,8 @@ public class Player : MonoBehaviour
 			Vector3 destination = TouchInput.lastTapReleasePosition.groundPosition;
 			if (Vector3.Distance(destination, transform.position) < JUMP_MAX_DISTANCE)
 			{
-				transform.parent = null; // Detach from IceFloe
-				GetComponent<PlayerMovementController>().currentFloe = null;
+				        transform.parent = null; // Detach from IceFloe
+        GetComponent<PlayerMovementController>().currentFloe = null;
 				StartCoroutine("Jump", TouchInput.lastTapReleasePosition.groundPosition);
 			}
 			else
