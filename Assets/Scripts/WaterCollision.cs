@@ -8,12 +8,15 @@ public class WaterCollision : MonoBehaviour {
 	public AudioClip waterSplashSfx;
 	public AudioSource aSource;
 
+	private PP_GameController gameCtrl;
+
 	void OnTriggerEnter(Collider collidedObj){
 
 		if (collidedObj.gameObject.name == "Player")
 		{
+//			gameCtrl = Camera.main.GetComponent<PP_GameController>();
+//			gameCtrl.playSoundEffect("WaterSplash");
 
-			//play water splash sound
 			aSource.clip = waterSplashSfx;
 			aSource.Play();
 
