@@ -11,7 +11,7 @@ public class PP_GameController : MonoBehaviour {
 	private bool bannerAnimationPlayed=false;
 	private bool didUpdateLevel=false;
 
-	public AudioClip jumpSfx,celebSfx,waterSplash;
+	public AudioClip jumpSfx,celebSfx,waterSplash,crying;
 	public AudioSource aSource;
 
 	void Start(){
@@ -25,8 +25,10 @@ public class PP_GameController : MonoBehaviour {
 			aSource.clip = jumpSfx;
 		else if(_name=="Celeb")
 			aSource.clip = celebSfx;
-		else if(_name=="WaterSplash")
-			aSource.clip = waterSplash;
+//		else if(_name=="WaterSplash")
+//			aSource.clip = waterSplash;
+		else if(_name=="Lose")
+			aSource.clip = crying;
 
 		aSource.Play();
 	}
@@ -130,7 +132,8 @@ public class PP_GameController : MonoBehaviour {
 		didUpdateLevel =false;
 		}
 
-	public void gameEndStatus(){ 	
+	public void gameEndStatus(){ 
+		playSoundEffect("Lose");
 		animateTheBannerMessage("You've lost it!",false);
 	}
 

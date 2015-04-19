@@ -1890,7 +1890,12 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 10000
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8241702, guid: 560279e98d5381c4a89086f0abd466c6, type: 2}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8241702, guid: 560279e98d5381c4a89086f0abd466c6, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 560279e98d5381c4a89086f0abd466c6, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &674865124
@@ -3010,6 +3015,7 @@ MonoBehaviour:
   jumpSfx: {fileID: 8300000, guid: 38ecbab17a391478ea262d10b0e0f72f, type: 3}
   celebSfx: {fileID: 8300000, guid: 4d96d47ebda594053bfa3aa889bfb55b, type: 3}
   waterSplash: {fileID: 8300000, guid: a647fe0b8fb8b4b76b59afadf1756a1c, type: 3}
+  crying: {fileID: 8300000, guid: d7e3144ce6e4642bea17303fbd9438a6, type: 3}
   aSource: {fileID: 1123703707}
 --- !u!114 &1123703706
 MonoBehaviour:
@@ -5230,7 +5236,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
