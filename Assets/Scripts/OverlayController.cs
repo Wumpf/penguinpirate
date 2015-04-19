@@ -4,11 +4,8 @@ using UnityEngine.UI;
 
 public class OverlayController : MonoBehaviour {
 
-	public Image overlay;
-	public Image swipe;
-	public Image tap;
-	public Button closeBtn;
-	public Image closeImg;
+	public GameObject howToOverlay;
+	public GameObject aboutOverlay;
 
 	// Use this for initialization
 	void Start () {
@@ -20,20 +17,19 @@ public class OverlayController : MonoBehaviour {
 	
 	}
 
-	public void showOverlay() {
-		overlay.enabled = true;
-		swipe.enabled = true;
-		tap.enabled = true;
-		closeBtn.enabled = true;
-		closeImg.enabled = true;
+	public void ShowHowToOverlay() {
+		howToOverlay.SetActive(true);
 	}
 
-	public void hideOverlay() {
-		overlay.enabled = false;
-		swipe.enabled = false;
-		tap.enabled = false;
-		closeBtn.enabled = false;
-		closeImg.enabled = false;
+	public void HideHowToOverlay() {
+		howToOverlay.SetActive(false);
 	}
 
+	public void ShowAboutOverlay() {
+		aboutOverlay.SetActive(true);
+	}
+
+	public void HideAboutOverlay() {
+		aboutOverlay.SetActive(false);
+	}
 }
