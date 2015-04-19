@@ -61,6 +61,9 @@ public class PP_GameController : MonoBehaviour {
 			bannerObj.SetActive (false);
 		}
 
+		// reset the game state here
+		resetTheGameState ();
+
 		GameObject currentLevelObj = allLevels.transform.FindChild(currentLevel.ToString()).gameObject;
 		currentLevelObj.SetActive (true);
 
