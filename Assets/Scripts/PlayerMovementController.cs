@@ -65,7 +65,8 @@ class PlayerMovementController : MonoBehaviour
         for (int i = 0; i < PathDots.Length; ++i)
         {
             PathDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
-            //HintDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+            HintDots[i] = Instantiate(dot, Vector3.zero, Quaternion.identity) as GameObject;
+            HintDots[i].GetComponent<Renderer>().material.color = new Color(1F, 0.5F, 0.5F);
         }
     }
 
@@ -77,7 +78,7 @@ class PlayerMovementController : MonoBehaviour
 
     private void UpdatePath()
     {
-        Vector3 startPosition = Position;
+        Vector3 startPosition = new Vector3(Position.x, 0, Position.z);
         Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
 
         Vector3 startMovement;
@@ -104,8 +105,50 @@ class PlayerMovementController : MonoBehaviour
         }
     }
 
+    private void UpdateHintPath()
+    {
+        Vector3 startPosition = new Vector3(Position.x, 0, Position.z);
+        Vector3 targetPosition = touchInput.lastTapStartPosition.groundPosition;
+
+        Vector3 startMovement;
+        if (transform.parent != null && transform.parent.GetComponent<Rigidbody>().velocity.sqrMagnitude > 0F)
+            startMovement = transform.parent.GetComponent<Rigidbody>().velocity;
+        else
+            startMovement = (targetPosition - startPosition).normalized;
+
+        if (startMovement.magnitude < MIN_START_SPEED)
+        {
+            startMovement.Normalize();
+            startMovement *= MIN_START_SPEED;
+            if (transform.parent != null)
+            {
+                transform.parent.GetComponent<Rigidbody>().velocity = startMovement;
+            }
+        }
+
+        Vector3 targetMovement = touchInput.position.groundPosition - touchInput.lastTapStartPosition.groundPosition;
+
+        hintPath = new Helpers.HermiteSpline(startPosition, startMovement, targetPosition, targetMovement);
+        
+    }
+
     void Update()
     {
+        bool showHintPath = touchInput.tapping;
+        if (showHintPath)
+        {
+            UpdateHintPath();
+        }
+        for (int i = 0; i < HintDots.Length; ++i)
+        {
+            HintDots[i].SetActive(showHintPath);
+            if (hintPath != null)
+            {
+                Debug.Log("MONSAOMDFNG");
+                HintDots[i].transform.position = hintPath.EvaluateAt((float)(1 + i) * 1F / (float)HintDots.Length);
+            } 
+        }        
+
         for (int i = 0; i < PathDots.Length; ++i)
         {
             PathDots[i].SetActive(path != null);
@@ -143,7 +186,7 @@ class PlayerMovementController : MonoBehaviour
         {
             Gizmos.DrawLine(path.GetNearestPosition(Position), path.GetNearestPosition(Position) + Vector3.up * 2F);
         }
-        DrawPath();
+        //DrawPath();
     }
 
     void DrawPath()
