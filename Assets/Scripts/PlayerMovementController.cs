@@ -144,7 +144,6 @@ class PlayerMovementController : MonoBehaviour
             HintDots[i].SetActive(showHintPath);
             if (hintPath != null)
             {
-                Debug.Log("MONSAOMDFNG");
                 HintDots[i].transform.position = hintPath.EvaluateAt((float)(1 + i) * 1F / (float)HintDots.Length);
             } 
         }        

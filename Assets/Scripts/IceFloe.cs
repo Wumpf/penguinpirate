@@ -41,8 +41,9 @@ public class IceFloe : MonoBehaviour
 		transform.position = startPosition;
 		transform.rotation = startOrientation;
 
+        Debug.Log("sedruzglhnjkml");
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().rotation = Quaternion.identity;
+        GetComponent<Rigidbody>().angularVelocity = new Vector3(0F, 0F, 0F);
 	}
 
 	// Update is called once per frame
